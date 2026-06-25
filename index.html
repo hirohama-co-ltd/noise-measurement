@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      margin: 0;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+    .header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #fff;
+      padding: 12px 16px;
+    }
+    .header h1 { margin: 0; font-size: 18px; }
+    .header p { margin: 4px 0 0; font-size: 11px; opacity: 0.92; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 16px;
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .session-panel {
+      margin: 12px 16px 0;
+      background: #fff;
+      border: 2px solid #93c5fd;
+      border-radius: 8px;
+      padding: 12px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .session-panel h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: #1e40af;
+    }
+    .session-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .session-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .session-field label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #475569;
+    }
+    .session-field input,
+    .session-field select {
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      min-width: 120px;
+    }
+    .session-field select { min-width: 180px; }
+    .session-field textarea,
+    .session-field input.wide {
+      min-width: 280px;
+      max-width: 100%;
+    }
+    .session-field.full { width: 100%; flex: 1 1 100%; }
+    .session-field-method {
+      flex: 1 1 320px;
+      min-width: 280px;
+    }
+    .session-field textarea {
+      min-height: 52px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    #measurementMethodConditions {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 10.5em;
+      line-height: 1.45;
+    }
+    .btn-session {
+      padding: 8px 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+    }
+    .section-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      color: #fff;
+      background: #2563eb;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .section-badge.b-measure {
+      background: #7c3aed;
+    }
+    .line-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .grid-cell.b-cell {
+      border-color: #ddd6fe;
+    }
+    .grid-cell.b-cell:hover { border-color: #c4b5fd; background: #faf5ff; }
+    .grid-cell.b-cell.done { border-color: #86efac; background: #f0fdf4; }
+    .eval-panel {
+      margin: 12px 16px 16px;
+      background: #fff;
+      border: 2px solid #f59e0b;
+      border-radius: 8px;
+      padding: 12px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .eval-panel h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: #b45309;
+    }
+    .eval-note {
+      font-size: 11px;
+      color: #64748b;
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+    .eval-summary {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .eval-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .eval-table th,
+    .eval-table td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 6px;
+      text-align: left;
+    }
+    .eval-table th { background: #fef3c7; }
+    .class-1 { color: #ca8a04; font-weight: bold; }
+    .class-2 { color: #ea580c; font-weight: bold; }
+    .class-3 { color: #dc2626; font-weight: bold; }
+    .class-none { color: #16a34a; font-weight: bold; }
+    .btn-eval {
+      padding: 10px 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      background: #d97706;
+      color: #fff;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    .record-table { font-size: 11px; }
+    .ref-table-wrap {
+      margin-bottom: 12px;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fffbeb;
+    }
+    .ref-table-toggle {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      background: #fef3c7;
+      font-weight: bold;
+      font-size: 12px;
+      text-align: left;
+      cursor: pointer;
+      color: #92400e;
+    }
+    .ref-table-body { padding: 8px 10px 10px; }
+    .ref-table { margin: 0; }
+    .ref-table th { text-align: center; font-size: 11px; }
+    .ref-table td { text-align: center; font-weight: bold; }
+    .ref-table .axis-head {
+      background: #fde68a;
+      font-weight: bold;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .ref-table .cell-none { color: #64748b; font-weight: normal; }
+    .ref-table .cell-hit {
+      outline: 3px solid #2563eb;
+      outline-offset: -2px;
+      background: #dbeafe !important;
+    }
+    .ref-table-notes {
+      margin: 8px 0 0;
+      padding-left: 1.2em;
+      font-size: 10px;
+      color: #78716c;
+      line-height: 1.5;
+    }
+    .key-btn.save.saving {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .toolbar label { font-size: 12px; font-weight: bold; }
+    .toolbar input {
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .map-panel {
+      margin: 12px 16px 0;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .map-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+      border: 1px solid #94a3b8;
+      background: #fff;
+      overflow: hidden;
+    }
+    .map-wrap img.map-bg {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
+    }
+    .map-fallback {
+      aspect-ratio: 297 / 210;
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .map-hint {
+      font-size: 11px;
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin: 12px 16px 0;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .entry-panel {
+      margin: 12px 16px 16px;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 12px 12px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .entry-panel h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: #334155;
+    }
+    .grid-table {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .grid-row {
+      display: grid;
+      grid-template-columns: 36px repeat(7, 1fr);
+      gap: 6px;
+      align-items: stretch;
+    }
+    .grid-row.grid-header {
+      margin-bottom: 2px;
+    }
+    .grid-corner {
+      min-height: 1px;
+    }
+    .grid-head-cell {
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+      color: #64748b;
+      padding: 4px 0;
+    }
+    .grid-row-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+      color: #1e40af;
+    }
+    .grid-cell {
+      padding: 10px 6px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      text-align: center;
+      min-height: 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .grid-cell:hover { border-color: #93c5fd; background: #f8fafc; }
+    .grid-cell.done { border-color: #86efac; background: #f0fdf4; }
+    .grid-cell.active { border-color: #f59e0b; background: #fffbeb; }
+    .grid-cell-code {
+      font-size: 10px;
+      color: #94a3b8;
+    }
+    .grid-cell-value {
+      font-weight: bold;
+      font-size: 14px;
+      color: #1e293b;
+    }
+    .grid-cell-value.empty {
+      color: #94a3b8;
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .summary {
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+      margin-top: 10px;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+    .modal h2 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      text-align: center;
+    }
+    .db-display {
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+      padding: 12px 8px;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      background: #f8fafc;
+      margin-bottom: 10px;
+      min-height: 56px;
+    }
+    .db-display .unit {
+      font-size: 16px;
+      color: #64748b;
+      margin-left: 4px;
+    }
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .key-btn {
+      padding: 16px 8px;
+      font-size: 22px;
+      font-weight: bold;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      text-align: center;
+      user-select: none;
+    }
+    .key-btn:active { background: #dbeafe; }
+    .key-btn.fn { background: #f1f5f9; font-size: 14px; }
+    .key-btn.save { background: #2563eb; color: #fff; border-color: #1d4ed8; font-size: 16px; }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .modal-actions button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-cancel { background: #e2e8f0; color: #475569; }
+    .extra-fields {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    .extra-fields input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+      z-index: 200;
+    }
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      z-index: 300;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">読込中...</div>
+
+  <div class="header">
+    <h1>🔊 騒音測定記録</h1>
+    <p>作業環境測定基準 別表1｜A測定・B測定の記録と管理区分評価</p>
+  </div>
+
+  <div class="toolbar">
+    <label for="workDate">測定日</label>
+    <input type="date" id="workDate">
+    <button type="button" onclick="reloadData()" style="padding:6px 12px;font-weight:bold;cursor:pointer;">再読込</button>
+    <span id="progressText" style="font-size:12px;color:#64748b;"></span>
+  </div>
+
+  <div class="session-panel">
+    <h3>測定・評価情報（1日1名）</h3>
+    <div class="session-fields">
+      <div class="session-field">
+        <label for="measuredTime">測定時刻</label>
+        <input type="time" id="measuredTime">
+      </div>
+      <div class="session-field">
+        <label for="employeeSelect">測定・評価実施者</label>
+        <select id="employeeSelect">
+          <option value="">— 選択 —</option>
+        </select>
+      </div>
+      <div class="session-field session-field-method">
+        <label for="measurementMethodConditions">測定条件および測定方法</label>
+        <textarea id="measurementMethodConditions" rows="7"></textarea>
+      </div>
+      <div class="session-field full">
+        <label for="actionSummary">措置概要（任意）</label>
+        <textarea id="actionSummary" placeholder="評価結果に基づき措置を講じた場合に記入"></textarea>
+      </div>
+      <button type="button" class="btn-session" onclick="saveSession()">測定情報を保存</button>
+    </div>
+  </div>
+
+  <div id="mapHint" class="map-hint" style="display:none;"></div>
+
+  <div class="map-panel">
+    <div class="map-title" id="mapTitle">騒音等級評価図 A測定マップ</div>
+    <div class="map-wrap" id="mapWrap">
+      <? if (mapImageUrl) { ?>
+        <img class="map-bg" id="mapImage" src="<?!= mapImageUrl ?>" alt="A測定マップ"
+          onerror="document.getElementById('mapHint').style.display='block';document.getElementById('mapHint').innerText='マップ画像の読込に失敗しました。ページを再読込してください。';">
+      <? } else { ?>
+        <div class="map-fallback" id="mapFallback">
+          マップ画像が見つかりません。<br>
+          PDFをPNGで書き出し、スプレッドシートと同じDriveフォルダに<br>
+          <strong>騒音測定A測定マップ.png</strong> として保存してください。
+        </div>
+      <? } ?>
+    </div>
+  </div>
+
+  <div class="entry-panel">
+    <h3>A測定<span class="section-badge">グリッド ①-A 〜 ⑦-D</span></h3>
+    <div class="grid-table" id="entryGrid"></div>
+  </div>
+
+  <div class="entry-panel">
+    <h3>B測定<span class="section-badge b-measure">ラインマスタ</span></h3>
+    <div class="line-grid" id="lineList"></div>
+    <div class="summary" id="summaryText"></div>
+  </div>
+
+  <div class="eval-panel">
+    <h3>評価結果（別表1・管理区分）</h3>
+    <div class="ref-table-wrap">
+      <button type="button" class="ref-table-toggle" onclick="toggleRefTable()">📋 管理区分表（別表1）を表示</button>
+      <div class="ref-table-body" id="refTableBody" style="display:none;">
+        <table class="eval-table ref-table" id="managementRefTable">
+          <thead>
+            <tr>
+              <th>A測定平均値 ＼ B測定</th>
+              <th>85dB未満</th>
+              <th>85dB以上<br>90dB未満</th>
+              <th>90dB以上</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="axis-head">85dB未満</th>
+              <td class="class-1" data-a="le85" data-b="le85">第Ⅰ管理区分</td>
+              <td class="class-2" data-a="le85" data-b="85to90">第Ⅱ管理区分</td>
+              <td class="class-3" data-a="le85" data-b="gt90">第Ⅲ管理区分</td>
+            </tr>
+            <tr>
+              <th class="axis-head">85dB以上90dB未満</th>
+              <td class="class-2" data-a="85to90" data-b="le85">第Ⅱ管理区分</td>
+              <td class="class-2" data-a="85to90" data-b="85to90">第Ⅱ管理区分</td>
+              <td class="class-3" data-a="85to90" data-b="gt90">第Ⅲ管理区分</td>
+            </tr>
+            <tr>
+              <th class="axis-head">90dB以上</th>
+              <td class="class-3" data-a="gt90" data-b="le85">第Ⅲ管理区分</td>
+              <td class="class-3" data-a="gt90" data-b="85to90">第Ⅲ管理区分</td>
+              <td class="class-3" data-a="gt90" data-b="gt90">第Ⅲ管理区分</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="ref-table-notes">
+          <li>A測定平均は80dB超の測定値のみで対数平均（エネルギー平均）</li>
+          <li>A測定のみの場合はB測定=85dB未満として評価</li>
+          <li>青色枠 = 現在の入力データに該当する区分</li>
+        </ul>
+      </div>
+    </div>
+    <p class="eval-note">
+      A測定平均（80dB超のみ対数平均）とB測定値から
+      <a href="https://www.jaish.gr.jp/horei/hor1-64/hor1-64-17-1-6.html" target="_blank" rel="noopener">作業環境測定基準 別表1</a>
+      に基づき管理区分を判定します。B測定未実施時はA測定のみ（B=85dB未満として評価）。
+    </p>
+    <div class="eval-summary" id="evalSummary">測定値入力後に評価プレビューが表示されます。</div>
+    <div id="evalPreview"></div>
+    <div>
+      <button type="button" class="btn-eval" onclick="runEvaluation()">評価を実行して記録保存</button>
+    </div>
+    <div id="evalRecords" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="modal-overlay" id="entryModal">
+    <div class="modal">
+      <h2 id="modalTitle">①-A</h2>
+      <div class="db-display"><span id="dbDisplay">0</span><span class="unit">dB</span></div>
+      <div class="keypad-grid">
+        <div class="key-btn" onclick="pressKey('7')">7</div>
+        <div class="key-btn" onclick="pressKey('8')">8</div>
+        <div class="key-btn" onclick="pressKey('9')">9</div>
+        <div class="key-btn" onclick="pressKey('4')">4</div>
+        <div class="key-btn" onclick="pressKey('5')">5</div>
+        <div class="key-btn" onclick="pressKey('6')">6</div>
+        <div class="key-btn" onclick="pressKey('1')">1</div>
+        <div class="key-btn" onclick="pressKey('2')">2</div>
+        <div class="key-btn" onclick="pressKey('3')">3</div>
+        <div class="key-btn fn" onclick="pressKey('.')">.</div>
+        <div class="key-btn" onclick="pressKey('0')">0</div>
+        <div class="key-btn fn" onclick="pressKey('BACK')">⌫</div>
+        <div class="key-btn fn" onclick="pressKey('C')" style="grid-column: span 3;">C クリア</div>
+        <div class="key-btn save" id="saveEntryBtn" onclick="saveEntry()" style="grid-column: span 3;">💾 保存</div>
+      </div>
+      <div class="extra-fields">
+        <label>備考（任意）</label>
+        <input type="text" id="inputNote" placeholder="特記事項">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal()">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let appData = { aPoints: [], bPoints: [], points: [], results: {}, gridCols: [], gridRows: [], employees: [], session: {} };
+    let selectedPointNo = null;
+    let dbInput = '';
+
+    window.onload = function() {
+      document.getElementById('workDate').value = todayStr();
+      document.getElementById('workDate').addEventListener('change', reloadData);
+      reloadData();
+    };
+
+    function todayStr() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-'
+        + String(d.getDate()).padStart(2, '0');
+    }
+
+    function reloadData() {
+      document.getElementById('loading').style.display = 'flex';
+      google.script.run
+        .withSuccessHandler(function(data) {
+          try {
+            appData = data || {};
+            appData.results = appData.results || {};
+            appData.aPoints = data.aPoints || [];
+            appData.bPoints = data.bPoints || [];
+            appData.points = data.points || appData.aPoints.concat(appData.bPoints);
+            appData.employees = data.employees || [];
+            appData.session = data.session || {};
+            appData.gridCols = data.gridCols || ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
+            appData.gridRows = data.gridRows || ['A', 'B', 'C', 'D'];
+            appData.defaultMeasurementMethodConditions = data.defaultMeasurementMethodConditions || '';
+            if (data.workDate) document.getElementById('workDate').value = data.workDate;
+
+            renderEmployeeSelect();
+            applySessionToForm(data.session);
+
+            if (data.mapTitle) document.getElementById('mapTitle').innerText = data.mapTitle;
+
+            const hint = document.getElementById('mapHint');
+            const existingImg = document.getElementById('mapImage');
+            const mapFound = !!(data.mapStatus && data.mapStatus.found);
+
+            if (data.mapImageUrl) {
+              hint.style.display = 'none';
+              let img = existingImg;
+              if (!img) {
+                const wrap = document.getElementById('mapWrap');
+                const fb = document.getElementById('mapFallback');
+                if (fb) fb.remove();
+                img = document.createElement('img');
+                img.className = 'map-bg';
+                img.id = 'mapImage';
+                img.alt = 'A測定マップ';
+                wrap.appendChild(img);
+              }
+              img.onerror = function() {
+                hint.style.display = 'block';
+                hint.innerText = 'マップ画像の読込に失敗しました。ページを再読込してください。';
+              };
+              img.src = data.mapImageUrl;
+            } else if (existingImg && existingImg.complete && existingImg.naturalWidth > 0) {
+              hint.style.display = 'none';
+            } else if (!existingImg && !mapFound) {
+              hint.style.display = 'block';
+              hint.innerText = (data.mapStatus && data.mapStatus.message)
+                ? data.mapStatus.message
+                : 'マップPNG未設定：Driveに「騒音測定A測定マップ.png」を置くと原図が表示されます。';
+            } else if (existingImg && existingImg.src && existingImg.src.indexOf('page=map') >= 0) {
+              hint.style.display = 'block';
+              hint.innerText = 'マップ画像の読込に失敗しました。ページを再読込してください。';
+            } else {
+              hint.style.display = 'none';
+            }
+
+            renderEntryGrid();
+            renderLineList();
+            updateProgress();
+            renderEvaluationPanel(data.evaluation);
+            highlightRefTableCells_();
+          } catch (err) {
+            console.error(err);
+            alert('画面の描画に失敗しました: ' + err.message);
+          } finally {
+            document.getElementById('loading').style.display = 'none';
+          }
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('loading').style.display = 'none';
+          alert('読込エラー: ' + err.message);
+        })
+        .getNoiseAppInitialData(document.getElementById('workDate').value);
+    }
+
+    function renderEmployeeSelect() {
+      const sel = document.getElementById('employeeSelect');
+      const current = sel.value;
+      sel.innerHTML = '<option value="">— 選択 —</option>';
+      (appData.employees || []).forEach(function(emp) {
+        const opt = document.createElement('option');
+        opt.value = emp.id;
+        opt.textContent = emp.name + ' (' + emp.id + ')';
+        opt.dataset.name = emp.name;
+        sel.appendChild(opt);
+      });
+      if (current) sel.value = current;
+    }
+
+    function applySessionToForm(session) {
+      session = session || {};
+      document.getElementById('measuredTime').value = session.measuredTime || defaultTimeStr();
+      if (session.employeeId) {
+        document.getElementById('employeeSelect').value = session.employeeId;
+      }
+      document.getElementById('measurementMethodConditions').value =
+        session.measurementMethodConditions || appData.defaultMeasurementMethodConditions || '';
+      document.getElementById('actionSummary').value = session.actionSummary || '';
+    }
+
+    function defaultTimeStr() {
+      const d = new Date();
+      return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+
+    function getSessionPayload_() {
+      const sel = document.getElementById('employeeSelect');
+      const opt = sel.options[sel.selectedIndex];
+      return {
+        workDate: document.getElementById('workDate').value,
+        measuredTime: document.getElementById('measuredTime').value,
+        employeeId: sel.value,
+        employeeName: opt && opt.dataset.name ? opt.dataset.name : (opt ? opt.textContent.split(' (')[0] : ''),
+        measurementMethodConditions: document.getElementById('measurementMethodConditions').value,
+        actionSummary: document.getElementById('actionSummary').value
+      };
+    }
+
+    function validateSession_() {
+      const payload = getSessionPayload_();
+      if (!payload.measuredTime) {
+        alert('測定時刻を入力してください');
+        return null;
+      }
+      if (!payload.employeeId) {
+        alert('測定者を選択してください（社員マスタ）');
+        return null;
+      }
+      return payload;
+    }
+
+    function saveSession() {
+      const payload = validateSession_();
+      if (!payload) return;
+      document.getElementById('loading').style.display = 'flex';
+      google.script.run
+        .withSuccessHandler(function() {
+          showToast('測定情報を保存しました');
+          document.getElementById('loading').style.display = 'none';
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('loading').style.display = 'none';
+          alert('保存エラー: ' + err.message);
+        })
+        .saveNoiseSession(payload);
+    }
+
+    function findAPoint_(col, row) {
+      const pts = appData.aPoints || [];
+      for (let i = 0; i < pts.length; i++) {
+        if (pts[i].gridCol === col && pts[i].gridRow === row) return pts[i];
+      }
+      return null;
+    }
+
+    function findPointByNo_(pointNo) {
+      const pts = appData.points || [];
+      for (let i = 0; i < pts.length; i++) {
+        if (pts[i].no === pointNo) return pts[i];
+      }
+      return null;
+    }
+
+    function renderEntryGrid() {
+      const grid = document.getElementById('entryGrid');
+      grid.innerHTML = '';
+
+      const header = document.createElement('div');
+      header.className = 'grid-row grid-header';
+      header.innerHTML = '<div class="grid-corner"></div>';
+      appData.gridCols.forEach(function(col) {
+        const cell = document.createElement('div');
+        cell.className = 'grid-head-cell';
+        cell.innerText = col;
+        header.appendChild(cell);
+      });
+      grid.appendChild(header);
+
+      appData.gridRows.forEach(function(row) {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'grid-row';
+
+        const rowLabel = document.createElement('div');
+        rowLabel.className = 'grid-row-label';
+        rowLabel.innerText = row;
+        rowEl.appendChild(rowLabel);
+
+        appData.gridCols.forEach(function(col) {
+          const p = findAPoint_(col, row);
+          if (!p) return;
+
+          const rec = appData.results[p.no] || {};
+          const hasDb = rec.db != null;
+          const cell = document.createElement('button');
+          cell.type = 'button';
+          cell.className = 'grid-cell'
+            + (hasDb ? ' done' : '')
+            + (selectedPointNo === p.no ? ' active' : '');
+          cell.id = 'grid-cell-' + p.no;
+
+          const code = document.createElement('span');
+          code.className = 'grid-cell-code';
+          code.innerText = p.label;
+
+          const val = document.createElement('span');
+          val.className = 'grid-cell-value' + (hasDb ? '' : ' empty');
+          val.innerText = hasDb ? (rec.db + ' dB') : '未入力';
+
+          cell.appendChild(code);
+          cell.appendChild(val);
+          cell.onclick = function() { openModal(p.no); };
+          rowEl.appendChild(cell);
+        });
+
+        grid.appendChild(rowEl);
+      });
+    }
+
+    function renderLineList() {
+      const list = document.getElementById('lineList');
+      list.innerHTML = '';
+      (appData.bPoints || []).forEach(function(p) {
+        const rec = appData.results[p.no] || {};
+        const hasDb = rec.db != null;
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'grid-cell b-cell'
+          + (hasDb ? ' done' : '')
+          + (selectedPointNo === p.no ? ' active' : '');
+        cell.id = 'line-row-' + p.no;
+
+        const code = document.createElement('span');
+        code.className = 'grid-cell-code';
+        code.innerText = p.label || p.lineName;
+
+        const val = document.createElement('span');
+        val.className = 'grid-cell-value' + (hasDb ? '' : ' empty');
+        val.innerText = hasDb ? (rec.db + ' dB') : '未入力';
+
+        cell.appendChild(code);
+        cell.appendChild(val);
+        cell.onclick = function() { openModal(p.no); };
+        list.appendChild(cell);
+      });
+    }
+
+    function updateProgress() {
+      const all = appData.points || [];
+      const total = all.length;
+      let done = 0;
+      all.forEach(function(p) {
+        if (appData.results[p.no] && appData.results[p.no].db != null) done++;
+      });
+      const aTotal = (appData.aPoints || []).length;
+      const bTotal = (appData.bPoints || []).length;
+      document.getElementById('progressText').innerText = '入力済 ' + done + ' / ' + total + '（A:' + aTotal + ' B:' + bTotal + '）';
+      document.getElementById('summaryText').innerText =
+        done === total && total > 0
+          ? '✅ 全測定点の入力が完了しています'
+          : 'A測定はグリッド、B測定はライン名をタップして dB を入力し、最後に評価を実行してください';
+    }
+
+    function toggleRefTable() {
+      const body = document.getElementById('refTableBody');
+      const btn = document.querySelector('.ref-table-toggle');
+      const open = body.style.display === 'none';
+      body.style.display = open ? 'block' : 'none';
+      btn.innerText = open ? '📋 管理区分表（別表1）を隠す' : '📋 管理区分表（別表1）を表示';
+    }
+
+    function classifyDbBandClient_(db) {
+      if (db == null || db === '' || isNaN(Number(db))) return null;
+      const v = Number(db);
+      if (v < 85) return 'le85';
+      if (v < 90) return '85to90';
+      return 'gt90';
+    }
+
+    function calcEnergyAvgClient_(values) {
+      const filtered = (values || []).map(Number).filter(function(v) { return !isNaN(v) && v > 80; });
+      if (!filtered.length) return null;
+      let sum = 0;
+      filtered.forEach(function(v) { sum += Math.pow(10, v / 10); });
+      return Math.round(10 * Math.log10(sum / filtered.length) * 10) / 10;
+    }
+
+    function evaluateClassClient_(aAvg, bDb, bMeasured) {
+      if (aAvg == null || isNaN(Number(aAvg))) return { label: '—', aBand: null, bBand: null };
+      const aBand = classifyDbBandClient_(aAvg);
+      const bBand = bMeasured ? classifyDbBandClient_(bDb) : 'le85';
+      const table = {
+        le85: { le85: '第Ⅰ管理区分', '85to90': '第Ⅱ管理区分', gt90: '第Ⅲ管理区分' },
+        '85to90': { le85: '第Ⅱ管理区分', '85to90': '第Ⅱ管理区分', gt90: '第Ⅲ管理区分' },
+        gt90: { le85: '第Ⅲ管理区分', '85to90': '第Ⅲ管理区分', gt90: '第Ⅲ管理区分' }
+      };
+      const label = (table[aBand] && table[aBand][bBand]) ? table[aBand][bBand] : '—';
+      return { label: label, aBand: aBand, bBand: bBand };
+    }
+
+    function buildEvaluationPreviewClient_() {
+      const aValues = [];
+      (appData.aPoints || []).forEach(function(p) {
+        const rec = appData.results[p.no];
+        if (rec && rec.db != null) aValues.push(rec.db);
+      });
+      const aAvg = calcEnergyAvgClient_(aValues);
+      const bItems = [];
+      (appData.bPoints || []).forEach(function(p) {
+        const rec = appData.results[p.no];
+        if (rec && rec.db != null) {
+          bItems.push({ label: p.label, db: rec.db });
+        }
+      });
+
+      const evaluations = [];
+      if (bItems.length) {
+        bItems.forEach(function(b) {
+          const ev = evaluateClassClient_(aAvg, b.db, true);
+          evaluations.push({
+            location: b.label,
+            aAvg: aAvg,
+            bDb: b.db,
+            bMeasured: true,
+            managementClass: ev.label,
+            detail: 'A平均' + bandLabelClient_(ev.aBand) + '・B測定' + bandLabelClient_(ev.bBand)
+          });
+        });
+      } else if (aAvg != null) {
+        const ev = evaluateClassClient_(aAvg, null, false);
+        evaluations.push({
+          location: '1F A測定マップ',
+          aAvg: aAvg,
+          bDb: null,
+          bMeasured: false,
+          managementClass: ev.label,
+          detail: 'A平均' + bandLabelClient_(ev.aBand) + '・B測定85dB未満（A測定のみ）'
+        });
+      }
+
+      return {
+        preview: {
+          aAvg: aAvg,
+          aCount: aValues.length,
+          bCount: bItems.length,
+          evaluations: evaluations
+        },
+        records: (appData.evaluation && appData.evaluation.records) ? appData.evaluation.records : []
+      };
+    }
+
+    function bandLabelClient_(band) {
+      if (band === 'le85') return '85dB未満';
+      if (band === '85to90') return '85dB以上90dB未満';
+      if (band === 'gt90') return '90dB以上';
+      return '—';
+    }
+
+    function refreshEvaluationClient_() {
+      appData.evaluation = buildEvaluationPreviewClient_();
+      renderEvaluationPanel(appData.evaluation);
+      highlightRefTableCells_();
+    }
+
+    function highlightRefTableCells_() {
+      const cells = document.querySelectorAll('#managementRefTable [data-a][data-b]');
+      cells.forEach(function(td) { td.classList.remove('cell-hit'); });
+      const evals = ((appData.evaluation || {}).preview || {}).evaluations || [];
+      evals.forEach(function(ev) {
+        const aBand = classifyDbBandClient_(ev.aAvg);
+        const bBand = ev.bMeasured ? classifyDbBandClient_(ev.bDb) : 'le85';
+        if (!aBand || !bBand) return;
+        cells.forEach(function(td) {
+          if (td.dataset.a === aBand && td.dataset.b === bBand) {
+            td.classList.add('cell-hit');
+          }
+        });
+      });
+    }
+
+    function classCss_(label) {
+      if (!label) return '';
+      if (label.indexOf('第Ⅰ') >= 0) return 'class-1';
+      if (label.indexOf('第Ⅱ') >= 0) return 'class-2';
+      if (label.indexOf('第Ⅲ') >= 0) return 'class-3';
+      return '';
+    }
+
+    function renderEvaluationPanel(evaluation) {
+      evaluation = evaluation || {};
+      const preview = evaluation.preview || {};
+      const records = evaluation.records || [];
+      const summaryEl = document.getElementById('evalSummary');
+      const previewEl = document.getElementById('evalPreview');
+      const recordsEl = document.getElementById('evalRecords');
+
+      if (preview.aAvg != null) {
+        summaryEl.innerHTML = '<strong>A測定平均：</strong>' + preview.aAvg + ' dB'
+          + '（80dB超 ' + (preview.aCount || 0) + '点）'
+          + '　<strong>B測定：</strong>' + (preview.bCount || 0) + 'ライン';
+      } else {
+        summaryEl.innerText = 'A測定平均：算出不可（80dB超の測定値が必要です）';
+      }
+
+      const evals = preview.evaluations || [];
+      if (!evals.length) {
+        previewEl.innerHTML = '<p style="font-size:12px;color:#64748b;">B測定またはA測定の入力後に評価できます。</p>';
+      } else {
+        let html = '<table class="eval-table"><thead><tr>'
+          + '<th>評価箇所</th><th>A平均</th><th>B測定</th><th>管理区分</th><th>根拠</th>'
+          + '</tr></thead><tbody>';
+        evals.forEach(function(ev) {
+          html += '<tr>'
+            + '<td>' + escapeHtml_(ev.location) + '</td>'
+            + '<td>' + (ev.aAvg != null ? ev.aAvg + ' dB' : '—') + '</td>'
+            + '<td>' + (ev.bMeasured && ev.bDb != null ? ev.bDb + ' dB' : '未実施') + '</td>'
+            + '<td class="' + classCss_(ev.managementClass) + '">' + escapeHtml_(ev.managementClass) + '</td>'
+            + '<td style="font-size:11px;">' + escapeHtml_(ev.detail || '') + '</td>'
+            + '</tr>';
+        });
+        html += '</tbody></table>';
+        previewEl.innerHTML = html;
+      }
+
+      if (records.length) {
+        let rh = '<h4 style="margin:0 0 6px;font-size:13px;">保存済み記録（3年間保存）</h4>'
+          + '<table class="eval-table record-table"><thead><tr>'
+          + '<th>測定箇所</th><th>測定結果</th><th>評価結果</th><th>実施者</th>'
+          + '</tr></thead><tbody>';
+        records.forEach(function(r) {
+          rh += '<tr>'
+            + '<td>' + escapeHtml_(r.measureLocation) + '</td>'
+            + '<td>' + escapeHtml_(r.measureResult) + '</td>'
+            + '<td class="' + classCss_(r.evalResult) + '">' + escapeHtml_(r.evalResult) + '</td>'
+            + '<td>' + escapeHtml_(r.evaluatorName) + '</td>'
+            + '</tr>';
+        });
+        rh += '</tbody></table>';
+        recordsEl.innerHTML = rh;
+      } else {
+        recordsEl.innerHTML = '';
+      }
+    }
+
+    function escapeHtml_(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function runEvaluation() {
+      const payload = validateSession_();
+      if (!payload) return;
+      if (!confirm('評価を実行し、記録をスプレッドシートに保存します。よろしいですか？')) return;
+      document.getElementById('loading').style.display = 'flex';
+      google.script.run
+        .withSuccessHandler(function(result) {
+          showToast('評価記録を保存しました');
+          reloadData();
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('loading').style.display = 'none';
+          alert('評価エラー: ' + err.message);
+        })
+        .runNoiseEvaluationAndRecord_(payload);
+    }
+
+    function updateDbDisplay() {
+      document.getElementById('dbDisplay').innerText = dbInput === '' ? '—' : dbInput;
+    }
+
+    function openModal(pointNo) {
+      const sessionPayload = validateSession_();
+      if (!sessionPayload) return;
+
+      selectedPointNo = pointNo;
+      const pt = findPointByNo_(pointNo);
+      const category = pt && pt.category === 'B' ? 'B測定' : 'A測定';
+      document.getElementById('modalTitle').innerText = category + ' ' + getPointLabel_(pointNo);
+      const rec = appData.results[pointNo] || {};
+      dbInput = rec.db != null ? String(rec.db) : '';
+      document.getElementById('inputNote').value = rec.note || '';
+      updateDbDisplay();
+      renderEntryGrid();
+      renderLineList();
+      document.getElementById('entryModal').style.display = 'flex';
+    }
+
+    function getPointLabel_(pointNo) {
+      const pt = findPointByNo_(pointNo);
+      if (pt) return pt.label || String(pointNo);
+      const cols = appData.gridCols.length ? appData.gridCols : ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
+      const rows = appData.gridRows.length ? appData.gridRows : ['A', 'B', 'C', 'D'];
+      const i = pointNo - 1;
+      const colIdx = Math.min(Math.floor(i / rows.length), cols.length - 1);
+      return cols[colIdx] + '-' + rows[i % rows.length];
+    }
+
+    function closeModal() {
+      document.getElementById('entryModal').style.display = 'none';
+      selectedPointNo = null;
+      dbInput = '';
+      renderEntryGrid();
+      renderLineList();
+    }
+
+    function pressKey(key) {
+      if (key === 'C') {
+        dbInput = '';
+      } else if (key === 'BACK') {
+        dbInput = dbInput.slice(0, -1);
+      } else if (key === '.') {
+        if (dbInput.indexOf('.') === -1) {
+          dbInput = dbInput === '' ? '0.' : dbInput + '.';
+        }
+      } else {
+        if (dbInput === '0' && key !== '.') dbInput = key;
+        else if (dbInput.length < 6) dbInput += key;
+      }
+      updateDbDisplay();
+    }
+
+    function saveEntry() {
+      if (!selectedPointNo) return;
+      const sessionPayload = validateSession_();
+      if (!sessionPayload) return;
+      if (dbInput === '' || isNaN(Number(dbInput))) {
+        alert('測定値(dB)をテンキーで入力してください');
+        return;
+      }
+
+      const pointNo = selectedPointNo;
+      const label = getPointLabel_(pointNo);
+      const noteVal = document.getElementById('inputNote').value;
+      const saveBtn = document.getElementById('saveEntryBtn');
+      saveBtn.classList.add('saving');
+      saveBtn.innerText = '保存中…';
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+          saveBtn.classList.remove('saving');
+          saveBtn.innerText = '💾 保存';
+          appData.results[pointNo] = {
+            pointNo: pointNo,
+            db: result.db,
+            note: noteVal
+          };
+          closeModal();
+          updateProgress();
+          refreshEvaluationClient_();
+          showToast(label + ' を保存しました');
+        })
+        .withFailureHandler(function(err) {
+          saveBtn.classList.remove('saving');
+          saveBtn.innerText = '💾 保存';
+          alert('保存エラー: ' + err.message);
+        })
+        .saveNoiseMeasurement({
+          workDate: sessionPayload.workDate,
+          pointNo: pointNo,
+          db: Number(dbInput),
+          note: noteVal
+        });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(function() { t.style.display = 'none'; }, 2500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# 騒音測定 — デプロイ・マップ設定
+
+## clasp
+clasp push
+clasp deploy -i AKfycbyU0LtpMyHXNyR4UtyFYIZABOHWXg7UGZBIkOhpgnwxT7Qq860q3idCBzWVgsIghN34vQ -d "変更内容"
+
+## マップ画像（PDF原図を表示する場合）
+1. PDF「騒音測定A測定マップ.pdf」を PNG で書き出し
+2. スプレッドシートと同じ Google Drive フォルダに保存
+3. ファイル名: 騒音測定A測定マップ.png
+   （または 設定.js の NOISE_MAP_DRIVE_FILE_ID に Drive ファイルIDを直接指定）
+
+## 座標微調整
+「測定点マスタ」シートの 列・行、または 番号X/Y(%) を編集後、Webアプリを再読込
+
+## 測定点
+グリッド ①-A〜⑦-D（列①〜⑦×行A〜D = 28セル）
