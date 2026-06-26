@@ -16,26 +16,34 @@ function doGet(e) {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-function getNoiseAppInitialData(workDate) {
+function getNoiseAppInitialData(workMonth, measurementTiming) {
   try {
-    var dateKey = normalizeWorkDate_(workDate);
-    var loaded = loadNoiseResultsForDate(dateKey);
+    var monthKey = normalizeWorkMonth_(workMonth);
+    var timingKey = normalizeMeasurementTiming_(measurementTiming);
+    var loaded = loadNoiseResultsForMonth_(monthKey, timingKey);
     var mapStatus = getNoiseMapStatus_();
     var aPoints = getNoiseMeasurementPoints_();
     var bPoints = buildLineMeasurementPoints_();
-    var evaluation = getNoiseEvaluationData(dateKey);
+    var boundaryPoints = buildBoundaryMeasurementPoints_();
+    var evaluation = getNoiseEvaluationData(monthKey, timingKey);
+    var session = loadNoiseSessionForMonth_(monthKey, timingKey);
     return {
-      workDate: dateKey,
-      isToday: dateKey === normalizeWorkDate_(new Date()),
+      workMonth: monthKey,
+      measurementTiming: timingKey,
+      workDate: workMonthToRecordDateKey_(monthKey, timingKey),
+      isCurrentMonth: monthKey === normalizeWorkMonth_(new Date()),
       aPoints: aPoints,
       bPoints: bPoints,
-      points: aPoints.concat(bPoints),
+      boundaryPoints: boundaryPoints,
+      points: aPoints.concat(bPoints).concat(boundaryPoints),
       employees: loadEmployeesForNoise_(),
-      session: loadNoiseSessionForDate_(dateKey),
+      session: session,
       results: loaded.byPoint,
       evaluation: evaluation,
       gridCols: NOISE_GRID_COLS,
       gridRows: NOISE_GRID_ROWS,
+      measurementTimingOptions: NOISE_MEASUREMENT_TIMING_OPTIONS,
+      disabledPointNos: listNoiseDisabledPointNos_(),
       mapImageUrl: getNoiseMapImageUrlForApi_(),
       mapStatus: mapStatus,
       mapTitle: '騒音等級評価図 A測定マップ',
@@ -49,4 +57,20 @@ function getNoiseAppInitialData(workDate) {
 
 function checkNoiseMapImageForMenu() {
   return getNoiseMapStatus_();
+}
+
+function saveNoisePointUsageConfig(payload) {
+  return saveNoisePointUsageConfig_(payload);
+}
+
+function runNoiseEvaluationAndRecord(payload) {
+  return runNoiseEvaluationAndRecord_(payload);
+}
+
+function getNoiseMeasurementHistory(limit) {
+  return listNoiseMeasurementHistory_(limit || 60);
+}
+
+function deleteNoiseMeasurementMonth(workMonth) {
+  return deleteNoiseMeasurementMonth_(workMonth);
 }

@@ -73,14 +73,15 @@ function evaluateManagementClass_(aAvg, bDb, bMeasured) {
   };
 }
 
-function collectNoiseDbValuesForDate_(workDate) {
-  var loaded = loadNoiseResultsForDate(workDate);
+function collectNoiseDbValuesForMonth_(workMonth, measurementTiming) {
+  var loaded = loadNoiseResultsForMonth_(workMonth, measurementTiming);
   var byPoint = loaded.byPoint;
   var aValues = [];
   var bItems = [];
 
   var aPoints = getNoiseMeasurementPoints_();
   for (var i = 0; i < aPoints.length; i++) {
+    if (aPoints[i].enabled === false) continue;
     var rec = byPoint[aPoints[i].no];
     if (rec && rec.db != null) aValues.push(rec.db);
   }
@@ -104,10 +105,15 @@ function collectNoiseDbValuesForDate_(workDate) {
   };
 }
 
-function buildNoiseEvaluationPreview_(workDate) {
-  var dateKey = normalizeWorkDate_(workDate);
-  var session = loadNoiseSessionForDate_(dateKey);
-  var collected = collectNoiseDbValuesForDate_(dateKey);
+function collectNoiseDbValuesForDate_(workDate) {
+  return collectNoiseDbValuesForMonth_(normalizeWorkDate_(workDate));
+}
+
+function buildNoiseEvaluationPreview_(workMonth, measurementTiming) {
+  var monthKey = normalizeWorkMonth_(workMonth);
+  var timingKey = normalizeMeasurementTiming_(measurementTiming);
+  var session = loadNoiseSessionForMonth_(monthKey, timingKey);
+  var collected = collectNoiseDbValuesForMonth_(monthKey, timingKey);
   var aAvg = collected.aAvg;
   var evaluations = [];
 
@@ -140,7 +146,9 @@ function buildNoiseEvaluationPreview_(workDate) {
   }
 
   return {
-    workDate: dateKey,
+    workMonth: monthKey,
+    measurementTiming: timingKey,
+    workDate: workMonthToRecordDateKey_(monthKey, timingKey),
     session: session,
     aAvg: aAvg,
     aCount: collected.aValues.length,
@@ -152,7 +160,13 @@ function buildNoiseEvaluationPreview_(workDate) {
 function formatMeasuredDateTime_(workDate, measuredTime) {
   var dateKey = normalizeWorkDate_(workDate);
   var time = String(measuredTime || '').trim();
-  if (!time) time = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'HH:mm');
+  if (!time) {
+    return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm');
+  }
+  if (time.indexOf(' ') >= 0 || time.indexOf('T') >= 0) {
+    var dt = parseMeasuredAt_(time);
+    return Utilities.formatDate(dt, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm');
+  }
   return dateKey + ' ' + time;
 }
 
@@ -178,8 +192,9 @@ function ensureNoiseEvalRecordSheet_() {
   return sheet;
 }
 
-function loadNoiseEvalRecordsForDate_(workDate) {
-  var dateKey = normalizeWorkDate_(workDate);
+function loadNoiseEvalRecordsForMonth_(workMonth, measurementTiming) {
+  var monthKey = normalizeWorkMonth_(workMonth);
+  var dateKey = workMonthToRecordDateKey_(monthKey, measurementTiming);
   var sheet = ensureNoiseEvalRecordSheet_();
   var lastRow = sheet.getLastRow();
   var list = [];
@@ -189,7 +204,8 @@ function loadNoiseEvalRecordsForDate_(workDate) {
   for (var i = values.length - 1; i >= 0; i--) {
     if (normalizeWorkDate_(values[i][0]) !== dateKey) continue;
     list.push({
-      workDate: dateKey,
+      workMonth: monthKey,
+      workDate: normalizeWorkDate_(values[i][0]),
       unitName: String(values[i][1] || ''),
       measuredAt: String(values[i][2] || ''),
       methodConditions: String(values[i][3] || ''),
@@ -209,12 +225,18 @@ function loadNoiseEvalRecordsForDate_(workDate) {
   return list;
 }
 
+function loadNoiseEvalRecordsForDate_(workDate) {
+  return loadNoiseEvalRecordsForMonth_(normalizeWorkDate_(workDate));
+}
+
 function runNoiseEvaluationAndRecord_(payload) {
   payload = payload || {};
-  var dateKey = normalizeWorkDate_(payload.workDate);
+  var monthKey = normalizeWorkMonth_(payload.workMonth || payload.workDate);
+  var timingKey = normalizeMeasurementTiming_(payload.measurementTiming);
+  var dateKey = workMonthToRecordDateKey_(monthKey, timingKey);
   var sessionPayload = {
-    workDate: dateKey,
-    measuredTime: payload.measuredTime,
+    workMonth: monthKey,
+    measurementTiming: timingKey,
     employeeId: payload.employeeId,
     employeeName: payload.employeeName,
     measurementMethodConditions: payload.measurementMethodConditions,
@@ -222,7 +244,7 @@ function runNoiseEvaluationAndRecord_(payload) {
   };
   saveNoiseSession(sessionPayload);
 
-  var preview = buildNoiseEvaluationPreview_(dateKey);
+  var preview = buildNoiseEvaluationPreview_(monthKey, timingKey);
   if (!preview.evaluations.length) {
     throw new Error('評価に必要なA測定データがありません（80dB超の測定値を入力してください）');
   }
@@ -230,7 +252,7 @@ function runNoiseEvaluationAndRecord_(payload) {
   var methodConditions = String(payload.measurementMethodConditions || NOISE_DEFAULT_METHOD_CONDITIONS).trim();
   var actionSummary = String(payload.actionSummary || '').trim();
   var evaluatorName = String(payload.employeeName || '').trim();
-  var measuredAtText = formatMeasuredDateTime_(dateKey, payload.measuredTime);
+  var measuredAtText = formatMeasuredDateTime_(dateKey, payload.measuredAt || new Date());
   var evaluatedAt = new Date();
 
   var sheet = ensureNoiseEvalRecordSheet_();
@@ -271,17 +293,19 @@ function runNoiseEvaluationAndRecord_(payload) {
 
   return {
     success: true,
+    workMonth: monthKey,
     workDate: dateKey,
     aAvg: preview.aAvg,
     evaluations: preview.evaluations,
-    records: loadNoiseEvalRecordsForDate_(dateKey)
+    records: loadNoiseEvalRecordsForMonth_(monthKey, timingKey)
   };
 }
 
-function getNoiseEvaluationData(workDate) {
-  var dateKey = normalizeWorkDate_(workDate);
+function getNoiseEvaluationData(workMonth, measurementTiming) {
+  var monthKey = normalizeWorkMonth_(workMonth);
+  var timingKey = normalizeMeasurementTiming_(measurementTiming);
   return {
-    preview: buildNoiseEvaluationPreview_(dateKey),
-    records: loadNoiseEvalRecordsForDate_(dateKey)
+    preview: buildNoiseEvaluationPreview_(monthKey, timingKey),
+    records: loadNoiseEvalRecordsForMonth_(monthKey, timingKey)
   };
 }

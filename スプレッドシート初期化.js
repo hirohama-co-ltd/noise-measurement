@@ -36,7 +36,7 @@ function initializeNoiseSpreadsheet(options) {
 
     var rows = NOISE_MEASUREMENT_POINTS.map(function(p) {
 
-      return [p.no, p.gridCol, p.gridRow];
+      return [p.no, p.gridCol, p.gridRow, '使用'];
 
     });
 
@@ -44,7 +44,7 @@ function initializeNoiseSpreadsheet(options) {
 
     if (rows.length) {
 
-      master.getRange(2, 1, 1 + rows.length, NOISE_POINT_MASTER_HEADERS.length).setValues(rows);
+      master.getRange(2, 1, rows.length, NOISE_POINT_MASTER_HEADERS.length).setValues(rows);
 
     }
 
@@ -55,6 +55,10 @@ function initializeNoiseSpreadsheet(options) {
       .setBackground('#dbeafe');
 
     master.setFrozenRows(1);
+
+  } else {
+
+    ensurePointMasterUsageColumn_(master);
 
   }
 
@@ -168,7 +172,7 @@ function writeNoiseSetupGuide_(ss, forceRewrite) {
 
     ['騒音測定記録', '評価記録（管理区分・3年保存）'],
 
-    ['測定点マスタ', 'A測定28セルの列・行定義'],
+    ['測定点マスタ', 'A測定28セルの列・行定義・不要箇所（使用/不要）'],
 
   ];
 

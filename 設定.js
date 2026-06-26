@@ -2,11 +2,14 @@
 // 騒音測定 — グリッド測定点定義（列①〜⑦ × 行A〜D = 28点）
 // ========================================
 
-var NOISE_RESULT_HEADERS = ['測定日', '測定区分', '測定点', '測定点No', '階', '測定値(dB)', '記録日時', '備考'];
+var NOISE_RESULT_HEADERS = [
+  '測定日', '測定区分', '測定点', '測定点No', '階', '測定値(dB)', '記録日時',
+  '測定者ID', '測定者名', '測定タイミング', '備考'
+];
 
 var NOISE_SESSION_SHEET = '騒音測定日次';
 var NOISE_SESSION_HEADERS = [
-  '測定日', '測定時刻', '測定者ID', '測定者名',
+  '測定日', '測定タイミング', '測定者ID', '測定者名',
   '測定条件および測定方法', '措置概要', '更新日時'
 ];
 
@@ -30,7 +33,7 @@ var NOISE_DEFAULT_METHOD_CONDITIONS = [
 
 var NOISE_CLASS_LABELS = { 1: '第Ⅰ管理区分', 2: '第Ⅱ管理区分', 3: '第Ⅲ管理区分' };
 
-var NOISE_POINT_MASTER_HEADERS = ['測定点No', '列', '行'];
+var NOISE_POINT_MASTER_HEADERS = ['測定点No', '列', '行', '使用'];
 
 /** 騒音測定スプレッドシートID（Webアプリ実行時は openById を使用） */
 var NOISE_SPREADSHEET_ID = '1Fx3cG4hlWlhozno66S_jwRiL8UjSz4RlEsuUKDrMDQQ';
@@ -44,8 +47,36 @@ var MASTER_CACHE_TTL_SEC = 600;
 /** B測定（ライン）の測定点No開始 */
 var NOISE_LINE_POINT_NO_OFFSET = 1000;
 
+/** 敷地境界測定（Ⓐ〜Ⓓ）の測定点No開始 */
+var NOISE_BOUNDARY_POINT_NO_OFFSET = 2000;
+
+var NOISE_BOUNDARY_LABELS = ['Ⓐ', 'Ⓑ', 'Ⓒ', 'Ⓓ'];
+
+var NOISE_MEASUREMENT_TIMING_OPTIONS = ['定期', '臨時'];
+
 var NOISE_GRID_COLS = ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
-var NOISE_GRID_ROWS = ['A', 'B', 'C', 'D'];
+var NOISE_GRID_ROWS = ['❶', '❷', '❸', '❹'];
+
+var NOISE_LEGACY_GRID_ROWS = { A: '❶', B: '❷', C: '❸', D: '❹' };
+
+function normalizeMeasurementTiming_(value) {
+  var s = String(value || '').trim();
+  if (s === '臨時' || s === '临时') return '臨時';
+  return '定期';
+}
+
+function buildBoundaryMeasurementPoints_() {
+  var pts = [];
+  for (var i = 0; i < NOISE_BOUNDARY_LABELS.length; i++) {
+    pts.push({
+      no: NOISE_BOUNDARY_POINT_NO_OFFSET + i + 1,
+      category: '境界',
+      label: NOISE_BOUNDARY_LABELS[i],
+      boundaryLabel: NOISE_BOUNDARY_LABELS[i]
+    });
+  }
+  return pts;
+}
 
 /** マップPNG（Google Drive）。空ならスプレッドシートと同じフォルダ内を自動検索 */
 var NOISE_MAP_DRIVE_FILE_ID = '';
@@ -102,9 +133,14 @@ function parseGridCol_(value) {
 }
 
 function parseGridRow_(value) {
-  var s = String(value || '').trim().toUpperCase();
+  var s = String(value || '').trim();
   var idx = NOISE_GRID_ROWS.indexOf(s);
   if (idx >= 0) return { idx: idx, row: NOISE_GRID_ROWS[idx] };
+  var upper = s.toUpperCase();
+  if (NOISE_LEGACY_GRID_ROWS[upper]) {
+    var legacy = NOISE_LEGACY_GRID_ROWS[upper];
+    return { idx: NOISE_GRID_ROWS.indexOf(legacy), row: legacy };
+  }
   return null;
 }
 
@@ -130,8 +166,147 @@ function toNoisePointForApi_(pt) {
     label: pt.label,
     gridCol: pt.gridCol,
     gridRow: pt.gridRow,
-    category: 'A'
+    category: 'A',
+    enabled: pt.enabled !== false
   };
+}
+
+function isNoisePointEnabled_(value) {
+  var s = String(value || '').trim();
+  if (!s) return true;
+  var lower = s.toLowerCase();
+  if (s === '不要' || s === '×' || s === '✕' || s === '非使用' || s === '0') return false;
+  if (lower === 'false' || lower === 'no' || lower === 'off' || lower === 'disabled') return false;
+  return true;
+}
+
+function findPointUsageColIndex_(headerRow) {
+  var h = (headerRow || []).map(function(c) { return String(c || '').trim(); });
+  var idx = h.indexOf('使用');
+  if (idx >= 0) return idx;
+  if (h.length >= 4) return 3;
+  return -1;
+}
+
+function getNoiseDisabledPointNos_() {
+  try {
+    var raw = PropertiesService.getDocumentProperties().getProperty('NOISE_DISABLED_POINT_NOS');
+    if (!raw) return {};
+    var arr = JSON.parse(raw);
+    var map = {};
+    (arr || []).forEach(function(n) {
+      n = Number(n);
+      if (n > 0) map[n] = true;
+    });
+    return map;
+  } catch (e) {
+    Logger.log('getNoiseDisabledPointNos_: ' + e.message);
+    return {};
+  }
+}
+
+function setNoiseDisabledPointNos_(pointNos) {
+  var list = (pointNos || []).map(function(n) { return Number(n); }).filter(function(n) { return n > 0; });
+  PropertiesService.getDocumentProperties().setProperty(
+    'NOISE_DISABLED_POINT_NOS',
+    JSON.stringify(list)
+  );
+  return list;
+}
+
+function ensurePointMasterRows_(sheet) {
+  if (!sheet) return;
+  ensurePointMasterUsageColumn_(sheet);
+  var defaults = buildAllGridPoints_();
+  var lastRow = sheet.getLastRow();
+  if (lastRow >= 1 + defaults.length) return;
+
+  var existing = {};
+  if (lastRow >= 2) {
+    var readCol = Math.max(sheet.getLastColumn(), 4);
+    var values = sheet.getRange(2, 1, lastRow, readCol).getValues();
+    for (var i = 0; i < values.length; i++) {
+      var no = Number(values[i][0]);
+      if (no) existing[no] = values[i];
+    }
+  }
+
+  if (sheet.getLastRow() < 1) {
+    sheet.getRange(1, 1, 1, NOISE_POINT_MASTER_HEADERS.length).setValues([NOISE_POINT_MASTER_HEADERS]);
+    sheet.getRange(1, 1, 1, NOISE_POINT_MASTER_HEADERS.length)
+      .setFontWeight('bold')
+      .setBackground('#dbeafe');
+    sheet.setFrozenRows(1);
+  }
+
+  var disabledMap = getNoiseDisabledPointNos_();
+  var rows = defaults.map(function(p) {
+    if (existing[p.no]) {
+      var row = existing[p.no].slice();
+      while (row.length < 4) row.push('使用');
+      if (disabledMap[p.no]) row[3] = '不要';
+      return row.slice(0, 4);
+    }
+    return [p.no, p.gridCol, p.gridRow, disabledMap[p.no] ? '不要' : '使用'];
+  });
+  sheet.getRange(2, 1, rows.length, 4).setValues(rows);
+}
+
+function ensurePointMasterUsageColumn_(sheet) {
+  if (!sheet) return;
+  var lastCol = Math.max(sheet.getLastColumn(), 4);
+  var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  if (String(headers[3] || '').trim() === '使用') return;
+
+  sheet.getRange(1, 4).setValue('使用').setFontWeight('bold').setBackground('#dbeafe');
+  var lastRow = sheet.getLastRow();
+  if (lastRow >= 2) {
+    var rowCount = lastRow - 1;
+    var usage = [];
+    for (var i = 0; i < rowCount; i++) usage.push(['使用']);
+    sheet.getRange(2, 4, rowCount, 1).setValues(usage);
+  }
+}
+
+function saveNoisePointUsageConfig_(payload) {
+  payload = payload || {};
+  var updates = payload.points || [];
+  if (!updates.length) throw new Error('保存する測定点がありません');
+
+  var disabledNos = [];
+  updates.forEach(function(u) {
+    var no = Number(u.no);
+    if (!no) return;
+    if (u.enabled === false) disabledNos.push(no);
+  });
+  setNoiseDisabledPointNos_(disabledNos);
+
+  var ss = getNoiseSpreadsheet_();
+  var sheet = ss.getSheetByName('測定点マスタ');
+  if (!sheet) throw new Error('測定点マスタがありません。メニューから初期化してください。');
+
+  ensurePointMasterRows_(sheet);
+
+  var byNo = {};
+  updates.forEach(function(u) {
+    var no = Number(u.no);
+    if (!no) return;
+    byNo[no] = u.enabled !== false;
+  });
+
+  var lastRow = sheet.getLastRow();
+  var saved = 0;
+  if (lastRow >= 2) {
+    var noValues = sheet.getRange(2, 1, lastRow, 1).getValues();
+    for (var i = 0; i < noValues.length; i++) {
+      var pointNo = Number(noValues[i][0]);
+      if (!pointNo || byNo[pointNo] === undefined) continue;
+      sheet.getRange(i + 2, 4).setValue(byNo[pointNo] ? '使用' : '不要');
+      saved++;
+    }
+  }
+
+  return { success: true, count: saved, disabledPointNos: disabledNos };
 }
 
 function parseNoisePointRow_(row, format) {
@@ -163,9 +338,11 @@ function parseNoisePointRow_(row, format) {
 
 function parseGridLabel_(label) {
   label = String(label || '').trim();
-  var m = label.match(/^([①②③④⑤⑥⑦])[-－]([A-Da-d])$/);
+  var m = label.match(/^([①②③④⑤⑥⑦])[-－]([A-Da-d❶❷❸❹])$/);
   if (!m) return null;
-  return { col: m[1], row: m[2].toUpperCase() };
+  var rowParsed = parseGridRow_(m[2]);
+  if (!rowParsed) return null;
+  return { col: m[1], row: rowParsed.row };
 }
 
 function detectNoisePointMasterFormat_(headerRow) {
@@ -190,29 +367,54 @@ function getNoiseSpreadsheet_() {
 function getNoiseMeasurementPoints_() {
   var defaults = buildAllGridPoints_();
   var byNo = {};
-  defaults.forEach(function(p) { byNo[p.no] = p; });
+  var disabledMap = getNoiseDisabledPointNos_();
+  defaults.forEach(function(p) {
+    byNo[p.no] = Object.assign({}, p, { enabled: !disabledMap[p.no] });
+  });
 
   try {
     var ss = getNoiseSpreadsheet_();
     var sheet = ss.getSheetByName('測定点マスタ');
     if (sheet && sheet.getLastRow() >= 2) {
-      var lastCol = Math.max(sheet.getLastColumn(), 3);
+      var lastCol = Math.max(sheet.getLastColumn(), 4);
       var headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
       var format = detectNoisePointMasterFormat_(headerRow);
-      var colCount = format === 'legacy5' ? 5 : (format === 'legacy6' ? 6 : Math.max(3, lastCol));
+      var usageCol = findPointUsageColIndex_(headerRow);
+      var colCount = format === 'legacy5' ? 5 : (format === 'legacy6' ? 6 : Math.max(4, lastCol));
       var lastRow = sheet.getLastRow();
       var values = sheet.getRange(2, 1, lastRow, colCount).getValues();
       for (var i = 0; i < values.length; i++) {
         var pt = parseNoisePointRow_(values[i], format);
         if (pt && pt.no >= 1 && pt.no <= defaults.length) {
-          byNo[pt.no] = pt;
+          var enabled = true;
+          if (usageCol >= 0 && values[i].length > usageCol) {
+            enabled = isNoisePointEnabled_(values[i][usageCol]);
+          } else if (disabledMap[pt.no]) {
+            enabled = false;
+          }
+          byNo[pt.no] = Object.assign({}, pt, { enabled: enabled });
         }
       }
     }
-  } catch (e) { /* Webアプリ初回等 */ }
+  } catch (e) {
+    Logger.log('getNoiseMeasurementPoints_: ' + e.message);
+  }
+
+  Object.keys(byNo).forEach(function(k) {
+    if (disabledMap[Number(k)]) byNo[k].enabled = false;
+  });
 
   return Object.keys(byNo).sort(function(a, b) { return Number(a) - Number(b); })
-    .map(function(k) { return toNoisePointForApi_(byNo[k]); });
+    .map(function(k) {
+      var pt = byNo[k];
+      if (pt.enabled === undefined) pt.enabled = true;
+      return toNoisePointForApi_(pt);
+    });
+}
+
+function listNoiseDisabledPointNos_() {
+  var map = getNoiseDisabledPointNos_();
+  return Object.keys(map).map(function(k) { return Number(k); }).sort(function(a, b) { return a - b; });
 }
 
 function extractDriveFileId_(text) {
@@ -520,4 +722,36 @@ function normalizeWorkDate_(value) {
       + String(parseInt(m[3], 10)).padStart(2, '0');
   }
   return s;
+}
+
+function normalizeWorkMonth_(value) {
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return Utilities.formatDate(value, Session.getScriptTimeZone(), 'yyyy-MM');
+  }
+  var s = String(value || '').trim();
+  if (!s) {
+    return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM');
+  }
+  var full = s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+  if (full) {
+    return full[1] + '-' + String(parseInt(full[2], 10)).padStart(2, '0');
+  }
+  var monthOnly = s.match(/^(\d{4})[-\/](\d{1,2})$/);
+  if (monthOnly) {
+    return monthOnly[1] + '-' + String(parseInt(monthOnly[2], 10)).padStart(2, '0');
+  }
+  return s;
+}
+
+function workMonthToSessionDateKey_(workMonth) {
+  return normalizeWorkMonth_(workMonth) + '-01';
+}
+
+function workMonthToRecordDateKey_(workMonth, measurementTiming) {
+  var monthKey = normalizeWorkMonth_(workMonth);
+  return normalizeMeasurementTiming_(measurementTiming) === '臨時' ? (monthKey + '-02') : (monthKey + '-01');
+}
+
+function dateBelongsToWorkMonth_(dateKey, workMonth) {
+  return normalizeWorkDate_(dateKey).indexOf(normalizeWorkMonth_(workMonth)) === 0;
 }

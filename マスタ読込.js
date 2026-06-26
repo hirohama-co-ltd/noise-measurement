@@ -150,5 +150,10 @@ function findNoisePointByNo_(pointNo) {
   for (var j = 0; j < bPoints.length; j++) {
     if (bPoints[j].no === pointNo) return bPoints[j];
   }
+
+  var boundaryPoints = buildBoundaryMeasurementPoints_();
+  for (var k = 0; k < boundaryPoints.length; k++) {
+    if (boundaryPoints[k].no === pointNo) return boundaryPoints[k];
+  }
   return null;
 }
