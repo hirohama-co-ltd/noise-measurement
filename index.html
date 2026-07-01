@@ -26,6 +26,26 @@
       background: #fff;
       border-bottom: 1px solid #e2e8f0;
     }
+    .toolbar-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .toolbar-field label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #475569;
+      white-space: nowrap;
+    }
+    .toolbar-field select {
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    #workYear { min-width: 88px; }
+    #workMonth { min-width: 72px; }
+    #employeeSelect { min-width: 180px; }
     .session-panel {
       margin: 12px 16px 0;
       background: #fff;
@@ -109,6 +129,195 @@
     }
     .section-badge.b-measure {
       background: #7c3aed;
+    }
+    .section-badge.boundary-measure {
+      background: #059669;
+    }
+    .boundary-panel {
+      margin: 12px 16px 0;
+      background: #fff;
+      border: 2px solid #6ee7b7;
+      border-radius: 8px;
+      padding: 12px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .boundary-panel h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: #047857;
+    }
+    .boundary-note {
+      font-size: 11px;
+      color: #64748b;
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+    .boundary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .boundary-item {
+      display: grid;
+      grid-template-columns: 48px 100px 1fr auto;
+      gap: 8px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      background: #f0fdf4;
+    }
+    .boundary-item.active {
+      border-color: #059669;
+      box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+    }
+    .boundary-label {
+      font-size: 22px;
+      font-weight: bold;
+      color: #047857;
+      text-align: center;
+      padding-top: 6px;
+    }
+    .boundary-db-wrap label,
+    .boundary-comment-wrap label {
+      display: block;
+      font-size: 11px;
+      font-weight: bold;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+    .boundary-db-wrap label {
+      height: 15px;
+      line-height: 15px;
+    }
+    .boundary-db-btn {
+      width: 100%;
+      padding: 0 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: bold;
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      height: 36px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      color: #94a3b8;
+    }
+    .boundary-db-btn.has-value {
+      color: #047857;
+    }
+    .boundary-db-btn:not(.has-value) {
+      font-weight: normal;
+    }
+    .boundary-db-wrap {
+      height: 87px;
+      box-sizing: border-box;
+    }
+    .boundary-db-wrap .measure-meta {
+      font-size: 10px;
+      text-align: left;
+      margin-top: 4px;
+      height: 28px;
+      flex: 0 0 28px;
+    }
+    .boundary-db-btn:hover {
+      border-color: #34d399;
+      background: #ecfdf5;
+    }
+    .boundary-comment-wrap textarea {
+      width: 100%;
+      min-height: 52px;
+      padding: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: vertical;
+    }
+    .btn-boundary-save {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      background: #059669;
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      margin-top: 18px;
+    }
+    .btn-boundary-save:hover { background: #047857; }
+    .measure-tabs-wrap {
+      max-width: 900px;
+      margin: 12px auto 16px;
+      padding: 0 16px;
+    }
+    .measure-tabs {
+      display: flex;
+      gap: 4px;
+    }
+    .measure-tab {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: bold;
+      border: 2px solid #e2e8f0;
+      border-bottom: none;
+      background: #f1f5f9;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+    }
+    .measure-tab.active {
+      background: #fff;
+      color: #1e40af;
+      border-color: #93c5fd;
+      position: relative;
+      z-index: 1;
+      margin-bottom: -2px;
+      padding-bottom: 12px;
+    }
+    .measure-tab.boundary-tab.active {
+      color: #047857;
+      border-color: #6ee7b7;
+    }
+    .measure-tab-panel {
+      display: none;
+      background: #fff;
+      border: 2px solid #93c5fd;
+      border-radius: 0 8px 8px 8px;
+      padding: 0 0 4px;
+    }
+    .measure-tab-panel.boundary-panel-wrap {
+      border-color: #6ee7b7;
+      border-radius: 0 8px 8px 8px;
+    }
+    .measure-tabs-wrap.boundary-active .measure-tab-panel.boundary-panel-wrap {
+      border-radius: 8px 0 8px 8px;
+    }
+    .measure-tab-panel.active {
+      display: block;
+    }
+    .measure-tab-panel .entry-panel,
+    .measure-tab-panel .eval-panel,
+    .measure-tab-panel .boundary-panel {
+      margin: 12px 12px 0;
+      max-width: none;
+    }
+    .measure-tab-panel .entry-panel:last-of-type,
+    .measure-tab-panel .eval-panel,
+    .measure-tab-panel .boundary-panel {
+      margin-bottom: 12px;
+    }
+    .measure-tab-panel .boundary-panel {
+      border: none;
+      padding: 0 4px;
     }
     .line-grid {
       display: grid;
@@ -332,35 +541,130 @@
       color: #1e40af;
     }
     .grid-cell {
-      padding: 10px 6px;
+      padding: 6px 4px;
       border: 2px solid #e2e8f0;
       border-radius: 8px;
       background: #fff;
       cursor: pointer;
       text-align: center;
-      min-height: 52px;
+      height: 82px;
+      min-height: 82px;
+      max-height: 82px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 2px;
+      overflow: hidden;
     }
     .grid-cell:hover { border-color: #93c5fd; background: #f8fafc; }
-    .grid-cell.done { border-color: #86efac; background: #f0fdf4; }
+    .grid-cell.done {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
     .grid-cell.active { border-color: #f59e0b; background: #fffbeb; }
     .grid-cell-code {
       font-size: 10px;
+      line-height: 12px;
+      height: 12px;
+      flex: 0 0 12px;
       color: #94a3b8;
     }
     .grid-cell-value {
       font-weight: bold;
       font-size: 14px;
+      line-height: 18px;
+      height: 18px;
+      flex: 0 0 18px;
       color: #1e293b;
     }
     .grid-cell-value.empty {
       color: #94a3b8;
       font-weight: normal;
+    }
+    .measure-meta {
+      font-size: 9px;
+      color: #64748b;
+      line-height: 12px;
+      height: 26px;
+      flex: 0 0 26px;
+      margin-top: 0;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      overflow: hidden;
+    }
+    .measure-meta.is-placeholder {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .measure-meta .meta-row {
+      display: block;
+      height: 12px;
+      line-height: 12px;
+      flex: 0 0 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .grid-cell.disabled {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      cursor: default;
+      opacity: 0.72;
+    }
+    .grid-cell.disabled:hover {
+      border-color: #cbd5e1;
+      background: #e2e8f0;
+    }
+    .grid-cell.disabled .grid-cell-code,
+    .grid-cell.disabled .grid-cell-value {
+      color: #94a3b8;
+    }
+    .grid-cell.config-target {
+      cursor: pointer;
+      box-shadow: inset 0 0 0 2px #f59e0b;
+    }
+    .a-config-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+    }
+    .btn-config-mode,
+    .btn-config-save {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
       font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-config-mode {
+      background: #e2e8f0;
+      color: #334155;
+    }
+    .btn-config-mode.active {
+      background: #f59e0b;
+      color: #fff;
+    }
+    .btn-config-save {
+      background: #2563eb;
+      color: #fff;
+    }
+    .config-hint {
+      font-size: 11px;
+      color: #b45309;
+    }
+    .config-hint.hidden,
+    .btn-config-save.hidden {
+      display: none;
     }
     .summary {
       text-align: center;
@@ -385,6 +689,9 @@
       width: 100%;
       max-width: 320px;
       box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+    #entryModal .modal {
+      max-width: 360px;
     }
     .modal h2 {
       margin: 0 0 8px;
@@ -440,16 +747,136 @@
       cursor: pointer;
     }
     .btn-cancel { background: #e2e8f0; color: #475569; }
+    .modal.modal-wide {
+      max-width: 720px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal.modal-wide h2 {
+      text-align: left;
+      font-size: 16px;
+    }
+    .history-table-wrap {
+      overflow: auto;
+      flex: 1;
+      min-height: 120px;
+      margin: 8px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .history-table th,
+    .history-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .history-table th {
+      background: #f1f5f9;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .history-table tbody tr {
+      cursor: pointer;
+    }
+    .history-table tbody tr:hover {
+      background: #eff6ff;
+    }
+    .history-table .col-date { white-space: nowrap; font-weight: bold; }
+    .history-table .col-count { text-align: center; white-space: nowrap; }
+    .history-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+    .history-badge.ok { background: #dcfce7; color: #166534; }
+    .history-badge.none { background: #f1f5f9; color: #64748b; }
+    .btn-history-delete {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      border: 1px solid #fca5a5;
+      border-radius: 6px;
+      background: #fff;
+      color: #dc2626;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-history-delete:hover { background: #fef2f2; }
+    .entry-meta-fields {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .entry-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+    }
+    .entry-meta-row label {
+      font-weight: bold;
+      color: #475569;
+    }
+    .entry-meta-row select,
+    .entry-meta-row input {
+      padding: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 100%;
+    }
+    .history-empty {
+      padding: 24px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+    }
+    .btn-history {
+      padding: 6px 12px;
+      font-weight: bold;
+      border: 1px solid #2563eb;
+      border-radius: 6px;
+      background: #fff;
+      color: #2563eb;
+      cursor: pointer;
+    }
+    .btn-history:hover { background: #eff6ff; }
+    .history-note {
+      font-size: 11px;
+      color: #64748b;
+      margin: 0 0 8px;
+    }
     .extra-fields {
       margin-top: 10px;
       font-size: 12px;
     }
-    .extra-fields input {
+    .extra-fields input,
+    .extra-fields textarea {
       width: 100%;
       padding: 8px;
       margin-top: 4px;
       border: 1px solid #cbd5e1;
       border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+    }
+    .extra-fields textarea {
+      resize: vertical;
+      min-height: 52px;
     }
     .toast {
       position: fixed;
@@ -481,29 +908,39 @@
 
   <div class="header">
     <h1>🔊 騒音測定記録</h1>
-    <p>作業環境測定基準 別表1｜A測定・B測定の記録と管理区分評価</p>
+    <p>作業環境測定（A/B）・敷地境界測定（Ⓐ〜Ⓓ）・管理区分評価</p>
   </div>
 
   <div class="toolbar">
-    <label for="workDate">測定日</label>
-    <input type="date" id="workDate">
+    <div class="toolbar-field">
+      <label for="employeeSelect">測定者</label>
+      <select id="employeeSelect">
+        <option value="">— 選択 —</option>
+      </select>
+    </div>
+    <div class="toolbar-field">
+      <label for="workYear">実施年</label>
+      <select id="workYear"></select>
+    </div>
+    <div class="toolbar-field">
+      <label for="workMonth">実施月</label>
+      <select id="workMonth"></select>
+    </div>
+    <div class="toolbar-field">
+      <label for="measurementTiming">測定</label>
+      <select id="measurementTiming">
+        <option value="定期">定期</option>
+        <option value="臨時">臨時</option>
+      </select>
+    </div>
     <button type="button" onclick="reloadData()" style="padding:6px 12px;font-weight:bold;cursor:pointer;">再読込</button>
+    <button type="button" class="btn-history" onclick="openHistoryModal()">過去データ一覧</button>
     <span id="progressText" style="font-size:12px;color:#64748b;"></span>
   </div>
 
   <div class="session-panel">
-    <h3>測定・評価情報（1日1名）</h3>
+    <h3>測定・評価情報（実施月）</h3>
     <div class="session-fields">
-      <div class="session-field">
-        <label for="measuredTime">測定時刻</label>
-        <input type="time" id="measuredTime">
-      </div>
-      <div class="session-field">
-        <label for="employeeSelect">測定・評価実施者</label>
-        <select id="employeeSelect">
-          <option value="">— 選択 —</option>
-        </select>
-      </div>
       <div class="session-field session-field-method">
         <label for="measurementMethodConditions">測定条件および測定方法</label>
         <textarea id="measurementMethodConditions" rows="7"></textarea>
@@ -534,75 +971,126 @@
     </div>
   </div>
 
-  <div class="entry-panel">
-    <h3>A測定<span class="section-badge">グリッド ①-A 〜 ⑦-D</span></h3>
-    <div class="grid-table" id="entryGrid"></div>
-  </div>
+  <div class="measure-tabs-wrap">
+    <div class="measure-tabs">
+      <button type="button" class="measure-tab active" data-tab="workplace" onclick="switchMeasureTab('workplace')">A/B測定（作業環境）</button>
+      <button type="button" class="measure-tab boundary-tab" data-tab="boundary" onclick="switchMeasureTab('boundary')">敷地境界測定（Ⓐ〜Ⓓ）</button>
+    </div>
 
-  <div class="entry-panel">
-    <h3>B測定<span class="section-badge b-measure">ラインマスタ</span></h3>
-    <div class="line-grid" id="lineList"></div>
-    <div class="summary" id="summaryText"></div>
-  </div>
+    <div id="tabWorkplace" class="measure-tab-panel active">
+      <div class="entry-panel">
+        <h3>A測定<span class="section-badge">グリッド ①-❶ 〜 ⑦-❹</span></h3>
+        <div class="a-config-bar">
+          <button type="button" class="btn-config-mode" id="btnConfigMode" onclick="toggleConfigMode()">不要箇所設定</button>
+          <button type="button" class="btn-config-save hidden" id="btnConfigSave" onclick="savePointConfig()">設定を保存</button>
+          <span class="config-hint hidden" id="configHint">不要にするセルをタップしてください（グレー＝不要）</span>
+        </div>
+        <div class="grid-table" id="entryGrid"></div>
+      </div>
 
-  <div class="eval-panel">
-    <h3>評価結果（別表1・管理区分）</h3>
-    <div class="ref-table-wrap">
-      <button type="button" class="ref-table-toggle" onclick="toggleRefTable()">📋 管理区分表（別表1）を表示</button>
-      <div class="ref-table-body" id="refTableBody" style="display:none;">
-        <table class="eval-table ref-table" id="managementRefTable">
-          <thead>
-            <tr>
-              <th>A測定平均値 ＼ B測定</th>
-              <th>85dB未満</th>
-              <th>85dB以上<br>90dB未満</th>
-              <th>90dB以上</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th class="axis-head">85dB未満</th>
-              <td class="class-1" data-a="le85" data-b="le85">第Ⅰ管理区分</td>
-              <td class="class-2" data-a="le85" data-b="85to90">第Ⅱ管理区分</td>
-              <td class="class-3" data-a="le85" data-b="gt90">第Ⅲ管理区分</td>
-            </tr>
-            <tr>
-              <th class="axis-head">85dB以上90dB未満</th>
-              <td class="class-2" data-a="85to90" data-b="le85">第Ⅱ管理区分</td>
-              <td class="class-2" data-a="85to90" data-b="85to90">第Ⅱ管理区分</td>
-              <td class="class-3" data-a="85to90" data-b="gt90">第Ⅲ管理区分</td>
-            </tr>
-            <tr>
-              <th class="axis-head">90dB以上</th>
-              <td class="class-3" data-a="gt90" data-b="le85">第Ⅲ管理区分</td>
-              <td class="class-3" data-a="gt90" data-b="85to90">第Ⅲ管理区分</td>
-              <td class="class-3" data-a="gt90" data-b="gt90">第Ⅲ管理区分</td>
-            </tr>
-          </tbody>
-        </table>
-        <ul class="ref-table-notes">
-          <li>A測定平均は80dB超の測定値のみで対数平均（エネルギー平均）</li>
-          <li>A測定のみの場合はB測定=85dB未満として評価</li>
-          <li>青色枠 = 現在の入力データに該当する区分</li>
-        </ul>
+      <div class="entry-panel">
+        <h3>B測定<span class="section-badge b-measure">ラインマスタ</span></h3>
+        <div class="line-grid" id="lineList"></div>
+        <div class="summary" id="summaryText"></div>
+      </div>
+
+      <div class="eval-panel">
+        <h3>評価結果（別表1・管理区分）</h3>
+        <div class="ref-table-wrap">
+          <button type="button" class="ref-table-toggle" onclick="toggleRefTable()">📋 管理区分表（別表1）を表示</button>
+          <div class="ref-table-body" id="refTableBody" style="display:none;">
+            <table class="eval-table ref-table" id="managementRefTable">
+              <thead>
+                <tr>
+                  <th>A測定平均値 ＼ B測定</th>
+                  <th>85dB未満</th>
+                  <th>85dB以上<br>90dB未満</th>
+                  <th>90dB以上</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th class="axis-head">85dB未満</th>
+                  <td class="class-1" data-a="le85" data-b="le85">第Ⅰ管理区分</td>
+                  <td class="class-2" data-a="le85" data-b="85to90">第Ⅱ管理区分</td>
+                  <td class="class-3" data-a="le85" data-b="gt90">第Ⅲ管理区分</td>
+                </tr>
+                <tr>
+                  <th class="axis-head">85dB以上90dB未満</th>
+                  <td class="class-2" data-a="85to90" data-b="le85">第Ⅱ管理区分</td>
+                  <td class="class-2" data-a="85to90" data-b="85to90">第Ⅱ管理区分</td>
+                  <td class="class-3" data-a="85to90" data-b="gt90">第Ⅲ管理区分</td>
+                </tr>
+                <tr>
+                  <th class="axis-head">90dB以上</th>
+                  <td class="class-3" data-a="gt90" data-b="le85">第Ⅲ管理区分</td>
+                  <td class="class-3" data-a="gt90" data-b="85to90">第Ⅲ管理区分</td>
+                  <td class="class-3" data-a="gt90" data-b="gt90">第Ⅲ管理区分</td>
+                </tr>
+              </tbody>
+            </table>
+            <ul class="ref-table-notes">
+              <li>A測定平均は80dB超の測定値のみで対数平均（エネルギー平均）</li>
+              <li>A測定のみの場合はB測定=85dB未満として評価</li>
+              <li>青色枠 = 現在の入力データに該当する区分</li>
+            </ul>
+          </div>
+        </div>
+        <p class="eval-note">
+          A測定平均（80dB超のみ対数平均）とB測定値から
+          <a href="https://www.jaish.gr.jp/horei/hor1-64/hor1-64-17-1-6.html" target="_blank" rel="noopener">作業環境測定基準 別表1</a>
+          に基づき管理区分を判定します。B測定未実施時はA測定のみ（B=85dB未満として評価）。
+        </p>
+        <div class="eval-summary" id="evalSummary">測定値入力後に評価プレビューが表示されます。</div>
+        <div id="evalPreview"></div>
+        <div>
+          <button type="button" class="btn-eval" onclick="runEvaluation()">評価を実行して記録保存</button>
+        </div>
+        <div id="evalRecords" style="margin-top:12px;"></div>
       </div>
     </div>
-    <p class="eval-note">
-      A測定平均（80dB超のみ対数平均）とB測定値から
-      <a href="https://www.jaish.gr.jp/horei/hor1-64/hor1-64-17-1-6.html" target="_blank" rel="noopener">作業環境測定基準 別表1</a>
-      に基づき管理区分を判定します。B測定未実施時はA測定のみ（B=85dB未満として評価）。
-    </p>
-    <div class="eval-summary" id="evalSummary">測定値入力後に評価プレビューが表示されます。</div>
-    <div id="evalPreview"></div>
-    <div>
-      <button type="button" class="btn-eval" onclick="runEvaluation()">評価を実行して記録保存</button>
+
+    <div id="tabBoundary" class="measure-tab-panel boundary-panel-wrap">
+      <div class="boundary-panel">
+        <h3>敷地境界測定<span class="section-badge boundary-measure">騒音規制法・Ⓐ〜Ⓓ</span></h3>
+        <p class="boundary-note">
+          工場・事業場の敷地境界線上の測定（高槻市の
+          <a href="https://www.city.takatsuki.osaka.jp/soshiki/25/32242.html" target="_blank" rel="noopener">騒音・振動に関する基準</a>
+          ）です。作業環境測定のA/B測定とは別に記録します。
+        </p>
+        <div class="boundary-list" id="boundaryList"></div>
+      </div>
     </div>
-    <div id="evalRecords" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal modal-wide">
+      <h2>過去データ一覧</h2>
+      <p class="history-note">行をタップするとその実施月のデータを読み込みます。削除は当該月の全データを消去します（直近60件）</p>
+      <div class="history-table-wrap" id="historyTableWrap">
+        <div class="history-empty">読込中...</div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeHistoryModal()">閉じる</button>
+      </div>
+    </div>
   </div>
 
   <div class="modal-overlay" id="entryModal">
     <div class="modal">
       <h2 id="modalTitle">①-A</h2>
+      <div class="entry-meta-fields">
+        <div class="entry-meta-row">
+          <label for="entryEmployeeSelect">測定者</label>
+          <select id="entryEmployeeSelect">
+            <option value="">— 選択 —</option>
+          </select>
+        </div>
+        <div class="entry-meta-row">
+          <label for="entryMeasuredAt">測定日時</label>
+          <input type="datetime-local" id="entryMeasuredAt">
+        </div>
+      </div>
       <div class="db-display"><span id="dbDisplay">0</span><span class="unit">dB</span></div>
       <div class="keypad-grid">
         <div class="key-btn" onclick="pressKey('7')">7</div>
@@ -620,9 +1108,9 @@
         <div class="key-btn fn" onclick="pressKey('C')" style="grid-column: span 3;">C クリア</div>
         <div class="key-btn save" id="saveEntryBtn" onclick="saveEntry()" style="grid-column: span 3;">💾 保存</div>
       </div>
-      <div class="extra-fields">
-        <label>備考（任意）</label>
-        <input type="text" id="inputNote" placeholder="特記事項">
+      <div class="extra-fields" id="entryExtraFields">
+        <label id="inputNoteLabel">備考（任意）</label>
+        <textarea id="inputNote" rows="2" placeholder="特記事項"></textarea>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal()">閉じる</button>
@@ -633,20 +1121,194 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    let appData = { aPoints: [], bPoints: [], points: [], results: {}, gridCols: [], gridRows: [], employees: [], session: {} };
+    let appData = { aPoints: [], bPoints: [], boundaryPoints: [], points: [], results: {}, gridCols: [], gridRows: [], employees: [], session: {}, disabledPointNos: [] };
     let selectedPointNo = null;
     let dbInput = '';
+    let entryModalBoundaryDbOnly = false;
+    let configMode = false;
+    let configDirty = false;
 
     window.onload = function() {
-      document.getElementById('workDate').value = todayStr();
-      document.getElementById('workDate').addEventListener('change', reloadData);
+      initMonthSelectors_();
       reloadData();
+      document.getElementById('workYear').addEventListener('change', reloadData);
+      document.getElementById('workMonth').addEventListener('change', reloadData);
+      document.getElementById('measurementTiming').addEventListener('change', reloadData);
     };
 
-    function todayStr() {
-      const d = new Date();
-      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-'
-        + String(d.getDate()).padStart(2, '0');
+    function getSelectedMeasurementTiming_() {
+      return document.getElementById('measurementTiming').value || '定期';
+    }
+
+    function setSelectedMeasurementTiming_(timing) {
+      document.getElementById('measurementTiming').value = timing || '定期';
+    }
+
+    function initMonthSelectors_() {
+      const yearSel = document.getElementById('workYear');
+      const monthSel = document.getElementById('workMonth');
+      const now = new Date();
+      yearSel.innerHTML = '';
+      for (let y = now.getFullYear() - 3; y <= now.getFullYear() + 1; y++) {
+        const opt = document.createElement('option');
+        opt.value = String(y);
+        opt.textContent = y + '年';
+        yearSel.appendChild(opt);
+      }
+      monthSel.innerHTML = '';
+      for (let m = 1; m <= 12; m++) {
+        const opt = document.createElement('option');
+        opt.value = String(m);
+        opt.textContent = m + '月';
+        monthSel.appendChild(opt);
+      }
+      yearSel.value = String(now.getFullYear());
+      monthSel.value = String(now.getMonth() + 1);
+    }
+
+    function getSelectedWorkMonth_() {
+      const y = document.getElementById('workYear').value;
+      const m = document.getElementById('workMonth').value;
+      return y + '-' + String(m).padStart(2, '0');
+    }
+
+    function setSelectedWorkMonth_(workMonth) {
+      const parts = String(workMonth || '').match(/^(\d{4})-(\d{1,2})/);
+      if (!parts) return;
+      document.getElementById('workYear').value = parts[1];
+      document.getElementById('workMonth').value = String(parseInt(parts[2], 10));
+    }
+
+    function formatDisplayMonth_(monthStr) {
+      if (!monthStr) return '—';
+      const m = String(monthStr).match(/^(\d{4})-(\d{1,2})/);
+      if (!m) return monthStr;
+      return m[1] + '年' + Number(m[2]) + '月';
+    }
+
+    function formatDateTimeLocal_(date) {
+      const d = date instanceof Date ? date : new Date(date);
+      if (isNaN(d.getTime())) return '';
+      return d.getFullYear() + '-'
+        + String(d.getMonth() + 1).padStart(2, '0') + '-'
+        + String(d.getDate()).padStart(2, '0') + 'T'
+        + String(d.getHours()).padStart(2, '0') + ':'
+        + String(d.getMinutes()).padStart(2, '0');
+    }
+
+    function parseRecordedAtToLocal_(recordedAt) {
+      const s = String(recordedAt || '').trim();
+      if (!s) return formatDateTimeLocal_(new Date());
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+      if (m) {
+        return m[1] + '-' + m[2] + '-' + m[3] + 'T' + m[4] + ':' + m[5];
+      }
+      return formatDateTimeLocal_(new Date());
+    }
+
+    function formatDisplayRecordedAt_(recordedAt) {
+      const s = String(recordedAt || '').trim();
+      if (!s) return '—';
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+      if (m) return m[1] + '/' + m[2] + '/' + m[3] + ' ' + m[4] + ':' + m[5];
+      return s;
+    }
+
+    function buildMeasureMetaEl_(rec, show) {
+      const meta = document.createElement('div');
+      meta.className = 'measure-meta' + (show ? '' : ' is-placeholder');
+      meta.setAttribute('aria-hidden', show ? 'false' : 'true');
+      const empRow = document.createElement('span');
+      empRow.className = 'meta-row';
+      empRow.innerText = show
+        ? (rec.employeeName || '—')
+        : '—';
+      const dtRow = document.createElement('span');
+      dtRow.className = 'meta-row';
+      dtRow.innerText = show
+        ? formatDisplayRecordedAt_(rec.recordedAt)
+        : '0000/00/00 00:00';
+      meta.appendChild(empRow);
+      meta.appendChild(dtRow);
+      return meta;
+    }
+
+    function openHistoryModal() {
+      const modal = document.getElementById('historyModal');
+      const wrap = document.getElementById('historyTableWrap');
+      modal.style.display = 'flex';
+      wrap.innerHTML = '<div class="history-empty">読込中...</div>';
+      google.script.run
+        .withSuccessHandler(function(list) {
+          renderHistoryTable(list || []);
+        })
+        .withFailureHandler(function(err) {
+          wrap.innerHTML = '<div class="history-empty">読込エラー: ' + escapeHtml_(err.message) + '</div>';
+        })
+        .getNoiseMeasurementHistory(60);
+    }
+
+    function closeHistoryModal() {
+      document.getElementById('historyModal').style.display = 'none';
+    }
+
+    function renderHistoryTable(list) {
+      const wrap = document.getElementById('historyTableWrap');
+      if (!list.length) {
+        wrap.innerHTML = '<div class="history-empty">保存済みの測定データはありません。</div>';
+        return;
+      }
+      let html = '<table class="history-table"><thead><tr>'
+        + '<th>実施月</th><th>測定</th><th>測定者</th><th>A</th><th>B</th><th>評価記録</th><th></th>'
+        + '</tr></thead><tbody>';
+      list.forEach(function(item) {
+        const evalBadge = item.hasEval
+          ? '<span class="history-badge ok">あり</span>'
+          : '<span class="history-badge none">未</span>';
+        const evalDetail = item.evalSummary
+          ? '<div style="font-size:11px;color:#475569;margin-top:2px;">' + escapeHtml_(item.evalSummary) + '</div>'
+          : '';
+        const monthKey = item.workMonth || '';
+        const timing = item.measurementTiming || '定期';
+        html += '<tr onclick="loadHistoryMonth(\'' + monthKey + '\', \'' + timing + '\')">'
+          + '<td class="col-date">' + escapeHtml_(formatDisplayMonth_(monthKey)) + '</td>'
+          + '<td>' + escapeHtml_(timing) + '</td>'
+          + '<td>' + escapeHtml_(item.employeeName || '—') + '</td>'
+          + '<td class="col-count">' + (item.aCount || 0) + '</td>'
+          + '<td class="col-count">' + (item.bCount || 0) + '</td>'
+          + '<td>' + evalBadge + evalDetail + '</td>'
+          + '<td><button type="button" class="btn-history-delete" onclick="deleteHistoryMonth(event, \'' + monthKey + '\')">削除</button></td>'
+          + '</tr>';
+      });
+      html += '</tbody></table>';
+      wrap.innerHTML = html;
+    }
+
+    function loadHistoryMonth(workMonth, measurementTiming) {
+      if (!workMonth) return;
+      setSelectedWorkMonth_(workMonth);
+      if (measurementTiming) setSelectedMeasurementTiming_(measurementTiming);
+      closeHistoryModal();
+      reloadData();
+    }
+
+    function deleteHistoryMonth(event, workMonth) {
+      if (event) event.stopPropagation();
+      if (!workMonth) return;
+      if (!confirm(formatDisplayMonth_(workMonth) + ' の測定データをすべて削除します。よろしいですか？')) return;
+      document.getElementById('loading').style.display = 'flex';
+      google.script.run
+        .withSuccessHandler(function(result) {
+          document.getElementById('loading').style.display = 'none';
+          showToast((result && result.totalDeleted != null ? result.totalDeleted : 0) + '件を削除しました');
+          openHistoryModal();
+          if (getSelectedWorkMonth_() === workMonth) reloadData();
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('loading').style.display = 'none';
+          alert('削除エラー: ' + err.message);
+        })
+        .deleteNoiseMeasurementMonth(workMonth);
     }
 
     function reloadData() {
@@ -658,15 +1320,22 @@
             appData.results = appData.results || {};
             appData.aPoints = data.aPoints || [];
             appData.bPoints = data.bPoints || [];
-            appData.points = data.points || appData.aPoints.concat(appData.bPoints);
+            appData.boundaryPoints = data.boundaryPoints || [];
+            appData.points = data.points || appData.aPoints.concat(appData.bPoints).concat(appData.boundaryPoints);
             appData.employees = data.employees || [];
             appData.session = data.session || {};
             appData.gridCols = data.gridCols || ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
-            appData.gridRows = data.gridRows || ['A', 'B', 'C', 'D'];
+            appData.gridRows = data.gridRows || ['❶', '❷', '❸', '❹'];
             appData.defaultMeasurementMethodConditions = data.defaultMeasurementMethodConditions || '';
-            if (data.workDate) document.getElementById('workDate').value = data.workDate;
+            applyDisabledPointsToAppData_(data);
+            if (data.workMonth) setSelectedWorkMonth_(data.workMonth);
+            if (data.measurementTiming) setSelectedMeasurementTiming_(data.measurementTiming);
+            else if (data.session && data.session.measurementTiming) {
+              setSelectedMeasurementTiming_(data.session.measurementTiming);
+            }
 
             renderEmployeeSelect();
+            renderEntryEmployeeSelect();
             applySessionToForm(data.session);
 
             if (data.mapTitle) document.getElementById('mapTitle').innerText = data.mapTitle;
@@ -707,7 +1376,11 @@
               hint.style.display = 'none';
             }
 
+            configMode = false;
+            configDirty = false;
+            updateConfigBar_();
             renderEntryGrid();
+            renderBoundaryList();
             renderLineList();
             updateProgress();
             renderEvaluationPanel(data.evaluation);
@@ -723,12 +1396,11 @@
           document.getElementById('loading').style.display = 'none';
           alert('読込エラー: ' + err.message);
         })
-        .getNoiseAppInitialData(document.getElementById('workDate').value);
+        .getNoiseAppInitialData(getSelectedWorkMonth_(), getSelectedMeasurementTiming_());
     }
 
-    function renderEmployeeSelect() {
-      const sel = document.getElementById('employeeSelect');
-      const current = sel.value;
+    function populateEmployeeSelect_(sel, selectedId) {
+      const current = selectedId || sel.value;
       sel.innerHTML = '<option value="">— 選択 —</option>';
       (appData.employees || []).forEach(function(emp) {
         const opt = document.createElement('option');
@@ -740,30 +1412,42 @@
       if (current) sel.value = current;
     }
 
+    function renderEmployeeSelect() {
+      populateEmployeeSelect_(document.getElementById('employeeSelect'));
+    }
+
+    function renderEntryEmployeeSelect() {
+      populateEmployeeSelect_(document.getElementById('entryEmployeeSelect'));
+    }
+
+    function getEmployeePayloadFromSelect_(sel) {
+      const opt = sel.options[sel.selectedIndex];
+      return {
+        employeeId: sel.value,
+        employeeName: opt && opt.dataset.name ? opt.dataset.name : (opt ? opt.textContent.split(' (')[0] : '')
+      };
+    }
+
     function applySessionToForm(session) {
       session = session || {};
-      document.getElementById('measuredTime').value = session.measuredTime || defaultTimeStr();
       if (session.employeeId) {
         document.getElementById('employeeSelect').value = session.employeeId;
+      }
+      if (session.measurementTiming) {
+        setSelectedMeasurementTiming_(session.measurementTiming);
       }
       document.getElementById('measurementMethodConditions').value =
         session.measurementMethodConditions || appData.defaultMeasurementMethodConditions || '';
       document.getElementById('actionSummary').value = session.actionSummary || '';
     }
 
-    function defaultTimeStr() {
-      const d = new Date();
-      return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-    }
-
     function getSessionPayload_() {
-      const sel = document.getElementById('employeeSelect');
-      const opt = sel.options[sel.selectedIndex];
+      const emp = getEmployeePayloadFromSelect_(document.getElementById('employeeSelect'));
       return {
-        workDate: document.getElementById('workDate').value,
-        measuredTime: document.getElementById('measuredTime').value,
-        employeeId: sel.value,
-        employeeName: opt && opt.dataset.name ? opt.dataset.name : (opt ? opt.textContent.split(' (')[0] : ''),
+        workMonth: getSelectedWorkMonth_(),
+        measurementTiming: getSelectedMeasurementTiming_(),
+        employeeId: emp.employeeId,
+        employeeName: emp.employeeName,
         measurementMethodConditions: document.getElementById('measurementMethodConditions').value,
         actionSummary: document.getElementById('actionSummary').value
       };
@@ -771,15 +1455,36 @@
 
     function validateSession_() {
       const payload = getSessionPayload_();
-      if (!payload.measuredTime) {
-        alert('測定時刻を入力してください');
-        return null;
-      }
       if (!payload.employeeId) {
-        alert('測定者を選択してください（社員マスタ）');
+        alert('測定者を左上で選択してください');
         return null;
       }
       return payload;
+    }
+
+    function validateEntryPayload_() {
+      const emp = getEmployeePayloadFromSelect_(document.getElementById('entryEmployeeSelect'));
+      const measuredAt = document.getElementById('entryMeasuredAt').value;
+      if (!emp.employeeId) {
+        alert('測定者を選択してください');
+        return null;
+      }
+      if (!measuredAt) {
+        alert('測定日時を入力してください');
+        return null;
+      }
+      const workDate = measuredAt.slice(0, 10);
+      const selectedMonth = getSelectedWorkMonth_();
+      if (workDate.indexOf(selectedMonth) !== 0) {
+        alert('測定日時は選択中の実施月（' + formatDisplayMonth_(selectedMonth) + '）内にしてください');
+        return null;
+      }
+      return {
+        workDate: workDate,
+        measuredAt: measuredAt,
+        employeeId: emp.employeeId,
+        employeeName: emp.employeeName
+      };
     }
 
     function saveSession() {
@@ -796,6 +1501,85 @@
           alert('保存エラー: ' + err.message);
         })
         .saveNoiseSession(payload);
+    }
+
+    function applyDisabledPointsToAppData_(data) {
+      const disabled = (data && data.disabledPointNos) ? data.disabledPointNos : [];
+      appData.disabledPointNos = disabled.slice();
+      (appData.aPoints || []).forEach(function(p) {
+        if (disabled.indexOf(p.no) >= 0) {
+          p.enabled = false;
+        } else if (p.enabled === undefined) {
+          p.enabled = true;
+        }
+      });
+    }
+
+    function isPointEnabled_(p) {
+      if (!p) return false;
+      if (appData.disabledPointNos && appData.disabledPointNos.indexOf(p.no) >= 0) return false;
+      return p.enabled !== false;
+    }
+
+    function updateConfigBar_() {
+      const btn = document.getElementById('btnConfigMode');
+      const saveBtn = document.getElementById('btnConfigSave');
+      const hint = document.getElementById('configHint');
+      btn.classList.toggle('active', configMode);
+      btn.innerText = configMode ? '設定を終了' : '不要箇所設定';
+      saveBtn.classList.toggle('hidden', !configMode);
+      hint.classList.toggle('hidden', !configMode);
+      saveBtn.disabled = !configDirty;
+    }
+
+    function toggleConfigMode() {
+      if (configMode && configDirty) {
+        if (!confirm('未保存の変更があります。破棄して終了しますか？')) return;
+      }
+      configMode = !configMode;
+      configDirty = false;
+      if (!configMode) {
+        reloadData();
+        return;
+      }
+      updateConfigBar_();
+      renderEntryGrid();
+    }
+
+    function togglePointEnabled_(p) {
+      const willEnable = !isPointEnabled_(p);
+      p.enabled = willEnable;
+      if (!appData.disabledPointNos) appData.disabledPointNos = [];
+      const idx = appData.disabledPointNos.indexOf(p.no);
+      if (!willEnable && idx < 0) appData.disabledPointNos.push(p.no);
+      if (willEnable && idx >= 0) appData.disabledPointNos.splice(idx, 1);
+      configDirty = true;
+      updateConfigBar_();
+      renderEntryGrid();
+    }
+
+    function savePointConfig() {
+      const points = (appData.aPoints || []).map(function(p) {
+        return { no: p.no, enabled: isPointEnabled_(p) };
+      });
+      document.getElementById('loading').style.display = 'flex';
+      google.script.run
+        .withSuccessHandler(function(result) {
+          configDirty = false;
+          configMode = false;
+          if (result && result.disabledPointNos) {
+            appData.disabledPointNos = result.disabledPointNos.slice();
+            applyDisabledPointsToAppData_({ disabledPointNos: result.disabledPointNos });
+          }
+          updateConfigBar_();
+          showToast('不要箇所の設定を保存しました（' + (result && result.count != null ? result.count : '') + '件）');
+          reloadData();
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('loading').style.display = 'none';
+          alert('保存エラー: ' + err.message);
+        })
+        .saveNoisePointUsageConfig({ points: points });
     }
 
     function findAPoint_(col, row) {
@@ -842,31 +1626,145 @@
           const p = findAPoint_(col, row);
           if (!p) return;
 
+          const enabled = isPointEnabled_(p);
           const rec = appData.results[p.no] || {};
-          const hasDb = rec.db != null;
+          const hasDb = enabled && rec.db != null;
           const cell = document.createElement('button');
           cell.type = 'button';
           cell.className = 'grid-cell'
+            + (enabled ? '' : ' disabled')
+            + (configMode && enabled ? ' config-target' : '')
             + (hasDb ? ' done' : '')
             + (selectedPointNo === p.no ? ' active' : '');
           cell.id = 'grid-cell-' + p.no;
+          cell.disabled = !enabled && !configMode;
 
           const code = document.createElement('span');
           code.className = 'grid-cell-code';
           code.innerText = p.label;
 
           const val = document.createElement('span');
-          val.className = 'grid-cell-value' + (hasDb ? '' : ' empty');
-          val.innerText = hasDb ? (rec.db + ' dB') : '未入力';
+          val.className = 'grid-cell-value' + (hasDb || !enabled ? '' : ' empty');
+          val.innerText = !enabled ? '不要' : (hasDb ? (rec.db + ' dB') : '未入力');
 
           cell.appendChild(code);
           cell.appendChild(val);
-          cell.onclick = function() { openModal(p.no); };
+          cell.appendChild(buildMeasureMetaEl_(rec, hasDb));
+          if (configMode) {
+            cell.onclick = function() { togglePointEnabled_(p); };
+          } else if (enabled) {
+            cell.onclick = function() { openModal(p.no); };
+          }
           rowEl.appendChild(cell);
         });
 
         grid.appendChild(rowEl);
       });
+    }
+
+    function renderBoundaryList() {
+      const list = document.getElementById('boundaryList');
+      list.innerHTML = '';
+      (appData.boundaryPoints || []).forEach(function(p) {
+        const rec = appData.results[p.no] || {};
+        const hasDb = rec.db != null;
+        const item = document.createElement('div');
+        item.className = 'boundary-item' + (selectedPointNo === p.no && entryModalBoundaryDbOnly ? ' active' : '');
+
+        const label = document.createElement('div');
+        label.className = 'boundary-label';
+        label.innerText = p.label;
+
+        const dbWrap = document.createElement('div');
+        dbWrap.className = 'boundary-db-wrap';
+        const dbLabel = document.createElement('label');
+        dbLabel.innerText = 'dB';
+        const dbBtn = document.createElement('button');
+        dbBtn.type = 'button';
+        dbBtn.className = 'boundary-db-btn' + (hasDb ? ' has-value' : '');
+        dbBtn.id = 'boundaryDbBtn-' + p.no;
+        dbBtn.innerText = hasDb ? (rec.db + ' dB') : '未入力';
+        dbBtn.onclick = function() { openBoundaryDbModal(p.no); };
+        dbWrap.appendChild(dbLabel);
+        dbWrap.appendChild(dbBtn);
+        dbWrap.appendChild(buildMeasureMetaEl_(rec, hasDb));
+
+        const commentWrap = document.createElement('div');
+        commentWrap.className = 'boundary-comment-wrap';
+        const commentLabel = document.createElement('label');
+        commentLabel.innerText = 'コメント';
+        const commentArea = document.createElement('textarea');
+        commentArea.id = 'boundaryComment-' + p.no;
+        commentArea.placeholder = '測定状況・区域区分など';
+        commentArea.value = rec.note || '';
+        commentWrap.appendChild(commentLabel);
+        commentWrap.appendChild(commentArea);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.className = 'btn-boundary-save';
+        saveBtn.innerText = '保存';
+        saveBtn.onclick = function() { saveBoundaryPoint(p.no); };
+
+        item.appendChild(label);
+        item.appendChild(dbWrap);
+        item.appendChild(commentWrap);
+        item.appendChild(saveBtn);
+        list.appendChild(item);
+      });
+    }
+
+    function saveBoundaryPoint(pointNo) {
+      const sessionPayload = validateSession_();
+      if (!sessionPayload) return;
+      const commentEl = document.getElementById('boundaryComment-' + pointNo);
+      const commentVal = commentEl ? commentEl.value.trim() : '';
+      const existingRec = appData.results[pointNo] || {};
+      const dbVal = existingRec.db != null ? existingRec.db : null;
+      const nowLocal = formatDateTimeLocal_(new Date());
+
+      if (dbVal == null && !commentVal) {
+        if (!confirm('測定値とコメントが空です。記録を削除しますか？')) return;
+      }
+
+      document.getElementById('loading').style.display = 'flex';
+      const payload = {
+        workMonth: getSelectedWorkMonth_(),
+        measurementTiming: getSelectedMeasurementTiming_(),
+        pointNo: pointNo,
+        workDate: nowLocal.slice(0, 10),
+        measuredAt: nowLocal,
+        employeeId: sessionPayload.employeeId,
+        employeeName: sessionPayload.employeeName,
+        note: commentVal,
+        clearWorkDate: existingRec.workDate || null,
+        db: dbVal
+      };
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+          document.getElementById('loading').style.display = 'none';
+          if (result && result.cleared) {
+            delete appData.results[pointNo];
+          } else {
+            appData.results[pointNo] = {
+              pointNo: pointNo,
+              db: result.db,
+              note: commentVal,
+              workDate: result.workDate,
+              recordedAt: result.measuredAt,
+              employeeId: result.employeeId,
+              employeeName: result.employeeName
+            };
+          }
+          renderBoundaryList();
+          showToast((findPointByNo_(pointNo) || {}).label + ' を保存しました');
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('loading').style.display = 'none';
+          alert('保存エラー: ' + err.message);
+        })
+        .saveNoiseMeasurement(payload);
     }
 
     function renderLineList() {
@@ -892,21 +1790,31 @@
 
         cell.appendChild(code);
         cell.appendChild(val);
+        cell.appendChild(buildMeasureMetaEl_(rec, hasDb));
         cell.onclick = function() { openModal(p.no); };
         list.appendChild(cell);
       });
     }
 
     function updateProgress() {
-      const all = appData.points || [];
-      const total = all.length;
+      let total = 0;
       let done = 0;
-      all.forEach(function(p) {
+      (appData.aPoints || []).forEach(function(p) {
+        if (!isPointEnabled_(p)) return;
+        total++;
         if (appData.results[p.no] && appData.results[p.no].db != null) done++;
       });
-      const aTotal = (appData.aPoints || []).length;
+      (appData.bPoints || []).forEach(function(p) {
+        total++;
+        if (appData.results[p.no] && appData.results[p.no].db != null) done++;
+      });
+      const aEnabled = (appData.aPoints || []).filter(function(p) { return isPointEnabled_(p); }).length;
+      const aDisabled = (appData.aPoints || []).length - aEnabled;
       const bTotal = (appData.bPoints || []).length;
-      document.getElementById('progressText').innerText = '入力済 ' + done + ' / ' + total + '（A:' + aTotal + ' B:' + bTotal + '）';
+      let progressText = '入力済 ' + done + ' / ' + total + '（A:' + aEnabled;
+      if (aDisabled > 0) progressText += '・不要' + aDisabled;
+      progressText += ' B:' + bTotal + '）';
+      document.getElementById('progressText').innerText = progressText;
       document.getElementById('summaryText').innerText =
         done === total && total > 0
           ? '✅ 全測定点の入力が完了しています'
@@ -953,6 +1861,7 @@
     function buildEvaluationPreviewClient_() {
       const aValues = [];
       (appData.aPoints || []).forEach(function(p) {
+        if (!isPointEnabled_(p)) return;
         const rec = appData.results[p.no];
         if (rec && rec.db != null) aValues.push(rec.db);
       });
@@ -1102,6 +2011,7 @@
       const payload = validateSession_();
       if (!payload) return;
       if (!confirm('評価を実行し、記録をスプレッドシートに保存します。よろしいですか？')) return;
+      payload.measuredAt = formatDateTimeLocal_(new Date());
       document.getElementById('loading').style.display = 'flex';
       google.script.run
         .withSuccessHandler(function(result) {
@@ -1112,24 +2022,93 @@
           document.getElementById('loading').style.display = 'none';
           alert('評価エラー: ' + err.message);
         })
-        .runNoiseEvaluationAndRecord_(payload);
+        .runNoiseEvaluationAndRecord(payload);
     }
 
     function updateDbDisplay() {
       document.getElementById('dbDisplay').innerText = dbInput === '' ? '—' : dbInput;
     }
 
+    function switchMeasureTab(tabId) {
+      document.querySelectorAll('.measure-tab').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.getElementById('tabWorkplace').classList.toggle('active', tabId === 'workplace');
+      document.getElementById('tabBoundary').classList.toggle('active', tabId === 'boundary');
+      const wrap = document.querySelector('.measure-tabs-wrap');
+      if (wrap) wrap.classList.toggle('boundary-active', tabId === 'boundary');
+    }
+
+    function openBoundaryDbModal(pointNo) {
+      const sessionPayload = validateSession_();
+      if (!sessionPayload) return;
+
+      const pt = findPointByNo_(pointNo);
+      if (!pt || pt.category !== '境界') return;
+
+      entryModalBoundaryDbOnly = true;
+      selectedPointNo = pointNo;
+      document.getElementById('modalTitle').innerText = '敷地境界 ' + getPointLabel_(pointNo);
+      document.getElementById('entryExtraFields').style.display = 'none';
+
+      const rec = appData.results[pointNo] || {};
+      dbInput = rec.db != null ? String(rec.db) : '';
+
+      renderEntryEmployeeSelect();
+      const entryEmpSel = document.getElementById('entryEmployeeSelect');
+      entryEmpSel.value = rec.employeeId || sessionPayload.employeeId || '';
+      if (!entryEmpSel.value && sessionPayload.employeeId) {
+        entryEmpSel.value = sessionPayload.employeeId;
+      }
+
+      const measuredAtInput = document.getElementById('entryMeasuredAt');
+      if (rec.recordedAt) {
+        measuredAtInput.value = parseRecordedAtToLocal_(rec.recordedAt);
+      } else {
+        measuredAtInput.value = formatDateTimeLocal_(new Date());
+      }
+
+      updateDbDisplay();
+      renderBoundaryList();
+      document.getElementById('entryModal').style.display = 'flex';
+    }
+
     function openModal(pointNo) {
       const sessionPayload = validateSession_();
       if (!sessionPayload) return;
 
-      selectedPointNo = pointNo;
       const pt = findPointByNo_(pointNo);
+      if (pt && pt.category === 'A' && !isPointEnabled_(pt)) {
+        alert('この測定点は不要として設定されています');
+        return;
+      }
+
+      entryModalBoundaryDbOnly = false;
+      selectedPointNo = pointNo;
+      document.getElementById('entryExtraFields').style.display = '';
       const category = pt && pt.category === 'B' ? 'B測定' : 'A測定';
       document.getElementById('modalTitle').innerText = category + ' ' + getPointLabel_(pointNo);
+      const noteLabel = document.getElementById('inputNoteLabel');
+      if (noteLabel) noteLabel.innerText = '備考（任意）';
       const rec = appData.results[pointNo] || {};
       dbInput = rec.db != null ? String(rec.db) : '';
       document.getElementById('inputNote').value = rec.note || '';
+      document.getElementById('inputNote').placeholder = '特記事項';
+
+      renderEntryEmployeeSelect();
+      const entryEmpSel = document.getElementById('entryEmployeeSelect');
+      entryEmpSel.value = rec.employeeId || sessionPayload.employeeId || '';
+      if (!entryEmpSel.value && sessionPayload.employeeId) {
+        entryEmpSel.value = sessionPayload.employeeId;
+      }
+
+      const measuredAtInput = document.getElementById('entryMeasuredAt');
+      if (rec.recordedAt) {
+        measuredAtInput.value = parseRecordedAtToLocal_(rec.recordedAt);
+      } else {
+        measuredAtInput.value = formatDateTimeLocal_(new Date());
+      }
+
       updateDbDisplay();
       renderEntryGrid();
       renderLineList();
@@ -1140,7 +2119,7 @@
       const pt = findPointByNo_(pointNo);
       if (pt) return pt.label || String(pointNo);
       const cols = appData.gridCols.length ? appData.gridCols : ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
-      const rows = appData.gridRows.length ? appData.gridRows : ['A', 'B', 'C', 'D'];
+      const rows = appData.gridRows.length ? appData.gridRows : ['❶', '❷', '❸', '❹'];
       const i = pointNo - 1;
       const colIdx = Math.min(Math.floor(i / rows.length), cols.length - 1);
       return cols[colIdx] + '-' + rows[i % rows.length];
@@ -1148,10 +2127,13 @@
 
     function closeModal() {
       document.getElementById('entryModal').style.display = 'none';
+      entryModalBoundaryDbOnly = false;
+      document.getElementById('entryExtraFields').style.display = '';
       selectedPointNo = null;
       dbInput = '';
       renderEntryGrid();
       renderLineList();
+      renderBoundaryList();
     }
 
     function pressKey(key) {
@@ -1172,45 +2154,83 @@
 
     function saveEntry() {
       if (!selectedPointNo) return;
-      const sessionPayload = validateSession_();
-      if (!sessionPayload) return;
-      if (dbInput === '' || isNaN(Number(dbInput))) {
-        alert('測定値(dB)をテンキーで入力してください');
-        return;
+      const pointNo = selectedPointNo;
+      const isBoundaryDb = entryModalBoundaryDbOnly;
+      const label = getPointLabel_(pointNo);
+      const existingRec = appData.results[pointNo] || {};
+      let noteVal;
+      if (isBoundaryDb) {
+        const commentEl = document.getElementById('boundaryComment-' + pointNo);
+        noteVal = commentEl ? commentEl.value : (existingRec.note || '');
+      } else {
+        noteVal = document.getElementById('inputNote').value;
+      }
+      const noteTrim = noteVal.trim();
+      const isClear = dbInput === '' || dbInput == null;
+
+      let entryPayload = null;
+      if (!isClear) {
+        entryPayload = validateEntryPayload_();
+        if (!entryPayload) return;
+        if (isNaN(Number(dbInput))) {
+          alert('測定値(dB)を数値で入力してください');
+          return;
+        }
+      } else if (isBoundaryDb && noteTrim) {
+        entryPayload = validateEntryPayload_();
+        if (!entryPayload) return;
+      } else if (isBoundaryDb && !noteTrim) {
+        const hadRecord = existingRec.db != null || !!(existingRec.note && String(existingRec.note).trim());
+        if (hadRecord && !confirm('測定値とコメントが空です。記録を削除しますか？')) return;
       }
 
-      const pointNo = selectedPointNo;
-      const label = getPointLabel_(pointNo);
-      const noteVal = document.getElementById('inputNote').value;
       const saveBtn = document.getElementById('saveEntryBtn');
       saveBtn.classList.add('saving');
       saveBtn.innerText = '保存中…';
+
+      const payload = {
+        workMonth: getSelectedWorkMonth_(),
+        measurementTiming: getSelectedMeasurementTiming_(),
+        pointNo: pointNo,
+        note: noteVal,
+        clearWorkDate: existingRec.workDate || null,
+        db: isClear ? null : Number(dbInput)
+      };
+      if (entryPayload) {
+        payload.workDate = entryPayload.workDate;
+        payload.measuredAt = entryPayload.measuredAt;
+        payload.employeeId = entryPayload.employeeId;
+        payload.employeeName = entryPayload.employeeName;
+      }
 
       google.script.run
         .withSuccessHandler(function(result) {
           saveBtn.classList.remove('saving');
           saveBtn.innerText = '💾 保存';
-          appData.results[pointNo] = {
-            pointNo: pointNo,
-            db: result.db,
-            note: noteVal
-          };
+          if (result && result.cleared) {
+            delete appData.results[pointNo];
+          } else {
+            appData.results[pointNo] = {
+              pointNo: pointNo,
+              db: result.db,
+              note: noteVal,
+              workDate: result.workDate,
+              recordedAt: result.measuredAt,
+              employeeId: result.employeeId,
+              employeeName: result.employeeName
+            };
+          }
           closeModal();
           updateProgress();
-          refreshEvaluationClient_();
-          showToast(label + ' を保存しました');
+          if (!isBoundaryDb) refreshEvaluationClient_();
+          showToast(result && result.cleared ? (label + ' をクリアしました') : (label + ' を保存しました'));
         })
         .withFailureHandler(function(err) {
           saveBtn.classList.remove('saving');
           saveBtn.innerText = '💾 保存';
           alert('保存エラー: ' + err.message);
         })
-        .saveNoiseMeasurement({
-          workDate: sessionPayload.workDate,
-          pointNo: pointNo,
-          db: Number(dbInput),
-          note: noteVal
-        });
+        .saveNoiseMeasurement(payload);
     }
 
     function showToast(msg) {
