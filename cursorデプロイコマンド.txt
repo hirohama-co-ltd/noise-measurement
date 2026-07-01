@@ -4,6 +4,11 @@
 clasp push
 clasp deploy -i AKfycbyU0LtpMyHXNyR4UtyFYIZABOHWXg7UGZBIkOhpgnwxT7Qq860q3idCBzWVgsIghN34vQ -d "変更内容"
 
+## 本番デプロイ情報
+デプロイID: AKfycbyU0LtpMyHXNyR4UtyFYIZABOHWXg7UGZBIkOhpgnwxT7Qq860q3idCBzWVgsIghN34vQ（@41）
+WebアプリURL: https://script.google.com/macros/s/AKfycbyU0LtpMyHXNyR4UtyFYIZABOHWXg7UGZBIkOhpgnwxT7Qq860q3idCBzWVgsIghN34vQ/exec
+マップURL: https://script.google.com/macros/s/AKfycbyU0LtpMyHXNyR4UtyFYIZABOHWXg7UGZBIkOhpgnwxT7Qq860q3idCBzWVgsIghN34vQ/exec?page=map
+
 ## マップ画像（PDF原図を表示する場合）
 1. PDF「騒音測定A測定マップ.pdf」を PNG で書き出し
 2. スプレッドシートと同じ Google Drive フォルダに保存
